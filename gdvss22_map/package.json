@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "baidu-map": "^0.1.4",
+    "echarts-leaflet": "^1.1.0"
+  }
+}
