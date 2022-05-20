@@ -174,14 +174,17 @@ function getTrafficSensors() {
 			promises.push(get_tsd(device))
 
 		Promise.all(promises).then((res) => {
-			console.log(fahrr)
-			console.log(motor)
+			getData(fahrr,motor)
 		}).catch((error) => {
 			console.log(error);
 		})
 
 
 	});
+}
+
+function getData(fahrr,motor){
+	
 }
 
 getTrafficSensors();
