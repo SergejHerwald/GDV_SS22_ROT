@@ -1,25 +1,3 @@
-function buildWeatherStationsMap() {
-	$.getJSON('https://api.mvvsmartcities.com/v3/device?deviceGroupId=62345c6b887ad798efd95edf&Ocp-Apim-Subscription-Key=b64af05bfac248888c1ff5681daab321', {}, function (res) {
-		let geoCoordMap = {}
-		let data = []
-		for (let item of res) {
-
-			if (item['location'] && item['location']['coordinates']) {
-				if (!geoCoordMap[item.name]) {
-					geoCoordMap[item.name] = []
-				}
-				geoCoordMap[item.name][0] = item['location']['coordinates'][0];
-				geoCoordMap[item.name][1] = item['location']['coordinates'][1];
-				data.push({
-					name: item.name,
-					value: 0
-				})
-			}
-		}
-		build(geoCoordMap, data)
-	});
-}
-
 function build(geoCoordMap, data) {
 
 	var convertData = function (data) {
@@ -33,38 +11,30 @@ function build(geoCoordMap, data) {
 				});
 			}
 		}
-		console.log(res)
 		return res;
 	};
 
 	var myChart = echarts.init(document.getElementById('main'));
 	myChart.setOption({
 		title: {
-			text: '全国主要城市空气质量',
-			subtext: 'data from PM25.in',
-			sublink: 'http://www.pm25.in',
+			text: 'Mannheim',
+			subtext: 'Mavi',
 			left: 'center',
 			textStyle: {
-				color: '#fff'
+				color: 'black'
 			}
 		},
 		tooltip: {
 			trigger: 'item'
 		},
 		leaflet: {
-			center: [8.475067358437684, 49.49631848203731],
-			zoom: 14,
+			center: [8.467067358437684, 49.48731848203731],
+			zoom: 15,
 			roam: true,
 			layerControl: {
 				position: 'topright'
 			},
 			tiles: [{
-				label: '天地图',
-				urlTemplate: 'http://t2.tianditu.com/DataServer?T=vec_w&x={x}&y={y}&l={z}',
-				options: {
-					attribution: 'tianditu.com'
-				}
-			}, {
 				label: 'Open Street Map',
 				urlTemplate: 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
 				options: {
@@ -77,7 +47,7 @@ function build(geoCoordMap, data) {
 				type: 'scatter',
 				coordinateSystem: 'leaflet',
 				data: convertData(data),
-				symbolSize: 15,
+				symbolSize: 25,
 				label: {
 					normal: {
 						formatter: '{b}',
@@ -107,13 +77,6 @@ function build(geoCoordMap, data) {
 					brushType: 'stroke'
 				},
 				hoverAnimation: true,
-				label: {
-					normal: {
-						formatter: '{b}',
-						position: 'right',
-						show: true
-					}
-				},
 				itemStyle: {
 					normal: {
 						color: 'black',
@@ -153,34 +116,72 @@ function build(geoCoordMap, data) {
 	});
 }
 
-// 1 GET: get all mavi devices und put them in array devices
-// 2 GET: for each device get timeSeriesIds und save them in dict timeSeriesIds
-//  data forman of timeSeriesIds: [{
-//	  mavi001:["00f21618-e568-4655-8752-bd58e7b7ae62", mavi002:[...]]
-//  }]
-function getTrafficSensors(){
+
+
+
+function getTrafficSensors() {
 	let devices = [];
+	let geoCoordMap = {}
+	let data = []
+	// 1 GET: get all mavi devices und put them in array devices
 	$.getJSON('https://api.mvvsmartcities.com/v3/device?Ocp-Apim-Subscription-Key=8e3b5fe2c8644919ae63394238b89644', {}, function (res) {
-		for(let item of res){
-			if(item.deviceId[0] == "m"){
+
+		for (let item of res) {
+			if (item.deviceId[0] == "m") {
+				//.log("DEVICE:", item)
 				devices.push(item.deviceId)
+				if (item['location'] && item['location']['coordinates']) {
+					if (!geoCoordMap[item.name]) {
+						geoCoordMap[item.name] = []
+					}
+					geoCoordMap[item.name][0] = item['location']['coordinates'][0];
+					geoCoordMap[item.name][1] = item['location']['coordinates'][1];
+					data.push({
+						name: item.name,
+						value: 0
+					})
+				}
 			}
 		}
-		let timeSeriesIds = {}
-		for(let device of devices){
-			$.getJSON(`https://api.mvvsmartcities.com/v3/device/timeseriesdefinition?Ocp-Apim-Subscription-Key=8e3b5fe2c8644919ae63394238b89644&deviceId=${device}`, {}, function (res) {
+		build(geoCoordMap, data)
+		let fahrr = []
+		let motor = []
 
-				if(!timeSeriesIds[res[0].deviceId])
-					timeSeriesIds[res[0].deviceId] = [];
-				
-				for(let tsd of res[0].timeSeriesDefinitions)
-					timeSeriesIds[res[0].deviceId].push(tsd.timeSeriesId);
-				
-			});
+		const get_tsd = (device) => {
+			return new Promise((resolve) => {
+				$.getJSON(`https://api.mvvsmartcities.com/v3/device/timeseriesdefinition?Ocp-Apim-Subscription-Key=8e3b5fe2c8644919ae63394238b89644&deviceId=${device}`, {}, function (res) {
+					for (let i of res[0].timeSeriesDefinitions) {
+
+						if (i.name.includes("Motorrad"))
+							motor.push({
+								name: device,
+								timeSeriesId: i.timeSeriesId
+							})
+
+						else if (i.name.includes("Fahrr"))
+							fahrr.push({
+								name: device,
+								timeSeriesId: i.timeSeriesId
+							})
+					}
+					resolve(motor, fahrr);
+				});
+			})
 		}
-		console.log(timeSeriesIds)
+
+		let promises = [];
+		for (let device of devices)
+			promises.push(get_tsd(device))
+
+		Promise.all(promises).then((res) => {
+			console.log(fahrr)
+			console.log(motor)
+		}).catch((error) => {
+			console.log(error);
+		})
+
+
 	});
 }
 
-//buildWeatherStationsMap();
 getTrafficSensors();
