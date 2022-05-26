@@ -309,19 +309,28 @@ async function doWork2(input) {
       * Timestamps: [1,2,3,4,5,6,7,8,9,10]           Timestamps: [3,6,8,9]    Timestamps: [1,2,3,4,5,6,7]
       * values: [10,20,30,40,50,60,70,80,90,100]     values: [10,2,4,5]       values: [1,20,30,4,50,6,70]
       */
+      /**
+       * Stelle1 werte vorhanden, stelle2 werte vorhanden, stelle3 werte vorhanden
+       * stelle1 werte vorhanden, stell2 werte vorhanden, stelle3 KEINE werte vorhanden
+       * Stell1 werte vorhanden, stelle2 KEINE werte vorhanden, stelle3 KEINE werte vorhanden
+       * Stell1 KEINE werte vorhanden, Stelle2 werte vorhanden,
+       */
+
+
+       console.log(responseMotor);
     let temp = [];
     for(let i = 0; i<20000;i++){
-        if(responseMotor[0].timestamps[i]==responseMotor[1].timestamps[i]){
-          //console.log(responseMotor[0].timestamps);
-          temp.push(responseMotor[0].values[i]+responseMotor[1].values[i]);
+        if(!responseMotor[1].timestamps[i]){
+          temp.push(responseMotor[0].values[i]);
         }else if(responseMotor[0].timestamps[i]==responseMotor[1].timestamps[i]==responseMotor[2].timestamps[i]){
           temp.push(responseMotor[0].values[i]+responseMotor[1].values[i]+responseMotor[2].timestamps[i]);
         }else if (!responseMotor[0].timestamps[i]){
          temp.push(responseMotor[1].values[i]);
-        }
+        }else if(responseMotor[0].timestamps[i]==responseMotor[1].timestamps[i]){
+          temp.push(responseMotor[0].values[i]+responseMotor[1].values[i]);
 
+        }
     }
-    
 
     summeMotorrad.setOption(
       (option = {
