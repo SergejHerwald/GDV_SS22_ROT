@@ -189,6 +189,7 @@ function getTrafficSensors() {
   );
 }
 
-function getData(fahrr, motor) {}
+function getData(fahrr, motor) {
+}
 
 getTrafficSensors();

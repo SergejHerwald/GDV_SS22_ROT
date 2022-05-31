@@ -1,4 +1,4 @@
-var summeMotorrad = echarts.init(document.getElementById("summeMotorrad"));
+var summeMotorrad = echarts.init(document.getElementById("summeMotorrad"), 'dark');
 
 let motorArray = [
   {
@@ -169,7 +169,6 @@ function getSumMotorrad(tsID, tsID2=0, tsID3=0, startDate, endDate, granularity)
             summe.push(res);
             
           }
-          //console.log(res);
           resolve(res);
           reject("Keine Daten Verfügbar");
         }
@@ -187,7 +186,6 @@ function getTsIDsKamera(kamera){
       returnArr.push(motorArray[i].timeSeriesId);
     };
     }
-    //console.log(returnArr);
     return resolve(returnArr);
     reject("Keine Daten");
 });
@@ -202,135 +200,98 @@ async function doWork2(input) {
       case 0:
         kamera = "mavi001";
         auswahl =  await getTsIDsKamera(kamera);
-        console.log(auswahl);
         break;
       case 1:
         kamera = "mavi004";
         auswahl =  await getTsIDsKamera(kamera);
-        console.log(auswahl);
         break;
       case 2:
         kamera = "mavi009";
         auswahl =  await getTsIDsKamera(kamera);
-        console.log(auswahl);
         break;
       case 3:
         kamera = "mavi015";
         auswahl =  await getTsIDsKamera(kamera);
-        console.log(auswahl);
         break;
       case 4:
         kamera = "mavi018";
         auswahl =  await getTsIDsKamera(kamera);
-        console.log(auswahl);
         break;
       case 5:
         kamera = "mavi014";
         auswahl =  await getTsIDsKamera(kamera);
-        console.log(auswahl);
         break;
       case 6:
         kamera = "mavi011";
         auswahl =  await getTsIDsKamera(kamera);
-        console.log(auswahl);
         break;
       case 7:
         kamera = "mavi016";
         auswahl =  await getTsIDsKamera(kamera);
-        console.log(auswahl);
         break;
       case 8:
         kamera = "mavi003";
         auswahl =  await getTsIDsKamera(kamera);
-        console.log(auswahl);
         break;
       case 9:
         kamera = "mavi006";
         auswahl =  await getTsIDsKamera(kamera);
-        console.log(auswahl);
         break;
       case 10:
         kamera = "mavi010";
         auswahl =  await getTsIDsKamera(kamera);
-        console.log(auswahl);
         break;
       case 11:
         kamera = "mavi012";
         auswahl =  await getTsIDsKamera(kamera);
-        console.log(auswahl);
         break;
       case 12:
         kamera = "mavi002";
         auswahl =  await getTsIDsKamera(kamera);
-        console.log(auswahl);
         break;
       case 13:
         kamera = "mavi013";
         auswahl =  await getTsIDsKamera(kamera);
-        console.log(auswahl);
         break;
       case 14:
         kamera = "mavi005";
         auswahl =  await getTsIDsKamera(kamera);
-        console.log(auswahl);
         break;
       case 15:
         kamera = "mavi019";
         auswahl =  await getTsIDsKamera(kamera);
-        console.log(auswahl);
         break;
       case 16:
         kamera = "mavi007";
         auswahl =  await getTsIDsKamera(kamera);
-        console.log(auswahl);
         break;
       default:
         kamera = "mavi001";
         auswahl = await getTsIDsKamera(kamera);
-        console.log(auswahl);
         break;
     }
     var responseMotor = await getSumMotorrad(
       auswahl[0],auswahl[1],auswahl[2],
       startDate,
       formattedDate,
-      "d"
+      "H"
     );
     
-    
-      //TODO
-      /*
-      *Aufsummieren der einzelnen Werte funktioniert noch nicht so wie es soll 
-      *PROBLEM:
-      * Es kann vorkommen, dass ein Gerät mehrere Timeseries hat. Hier können sich die Timestamps aber unterscheiden.
-      * Man muss es schaffen, auch wenn in Timeseries A keine werte für Tag X vorliegen in Timeseries B aber schon diese korrekt zu summieren  
-      * Bsp.
-      * TimeseriesId: A                              TimeseriesId: B          TimeseriesId: C
-      * Timestamps: [1,2,3,4,5,6,7,8,9,10]           Timestamps: [3,6,8,9]    Timestamps: [1,2,3,4,5,6,7]
-      * values: [10,20,30,40,50,60,70,80,90,100]     values: [10,2,4,5]       values: [1,20,30,4,50,6,70]
-      */
-      /**
-       * Stelle1 werte vorhanden, stelle2 werte vorhanden, stelle3 werte vorhanden
-       * stelle1 werte vorhanden, stell2 werte vorhanden, stelle3 KEINE werte vorhanden
-       * Stell1 werte vorhanden, stelle2 KEINE werte vorhanden, stelle3 KEINE werte vorhanden
-       * Stell1 KEINE werte vorhanden, Stelle2 werte vorhanden,
-       */
-
-
-       console.log(responseMotor);
     let temp = [];
-    for(let i = 0; i<20000;i++){
-        if(!responseMotor[1].timestamps[i]){
-          temp.push(responseMotor[0].values[i]);
-        }else if(responseMotor[0].timestamps[i]==responseMotor[1].timestamps[i]==responseMotor[2].timestamps[i]){
-          temp.push(responseMotor[0].values[i]+responseMotor[1].values[i]+responseMotor[2].timestamps[i]);
-        }else if (!responseMotor[0].timestamps[i]){
-         temp.push(responseMotor[1].values[i]);
-        }else if(responseMotor[0].timestamps[i]==responseMotor[1].timestamps[i]){
+    for(let i=0; i<responseMotor[0].values.length;i++){
+      if(responseMotor[0] && responseMotor[1] && responseMotor[2]){
+        if(responseMotor[0].timestamps[i]==responseMotor[1].timestamps[i]&&responseMotor[0].timestamps[i]==responseMotor[2].timestamps[i]){
+          temp.push(responseMotor[0].values[i]+responseMotor[1].values[i]+responseMotor[2].values[i]);
+        }
+      }else if(responseMotor[0] && responseMotor[1]){
+        if(responseMotor[0].timestamps[i]==responseMotor[1].timestamps[i]){
           temp.push(responseMotor[0].values[i]+responseMotor[1].values[i]);
+        }
+      }else if(responseMotor[0]){
+          temp.push(responseMotor[0].values[i]);
 
         }
-    }
+      }
 
     summeMotorrad.setOption(
       (option = {
@@ -348,7 +309,7 @@ async function doWork2(input) {
         },
         xAxis: {
           type: "category",
-          data: responseMotor[1].timestamps,
+          data: responseMotor[0].timestamps,
         },
         yAxis: {
           type: "value",

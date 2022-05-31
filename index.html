@@ -9,28 +9,56 @@
 </head>
 
   <body>
+    <h1> Gruppe Rot</h1>
     <div class="container">
       <div class="main">
-
+        <!--<div id="logo" style="width: auto; height: 100px"></div>
+        <div id="main" style="width: 100%;height: 500px;"></div>-->
+        <div id="tempLoRa" class="abstandOben" style="height: 200px; width: auto"></div>
+        <p>Um Zwischen den LoRa Sensoren umzuschalten, den Namen des Gerätes in folgendem Format eingeben:
+           <input type="text" placeholder="T-001" id="setLoRaDevice">
+           <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="buildChart(document.getElementById('setLoRaDevice').value)">Los!</button> <br>
+           Hinweis: Sie können aktuell zwischen 60 geräten wechseln.
+        </p>
+        
+        
+        
         <div class="row">
           <div class="col d-flex justify-content-center">
-            <div id="main" style="width: 400px;height:450px;"></div>
-            <div id="summeZweirad" style="width: 100%;height: 450px;"></div>
+            <div id="summeFahrrad" class="abstandRechts, abstandOben" style="width: 1000px;height: 500px;"></div>
+            <div id="summeMotorrad" class="abstandLinks, abstandOben" style="width: 1000px;height: 500px;"></div>
+          </div>
+          <p>Fahrräder und Motorräder</p>
+          <div class="col d-flex justify-content-center">
+            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork(0),doWork2(0)">MAVI001</button>
+            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork(1),doWork2(1)">MAVI004</button>
+            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork(2),doWork2(2)">MAVI009</button>
+            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork(3),doWork2(3)">MAVI015</button>
+            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork(4),doWork2(4)">MAVI018</button>
+            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork(5),doWork2(5)">MAVI014</button>
+            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork(6),doWork2(6)">MAVI011</button>
+          </div>
+          <div>
+            <p>Nur Motorraeder</p>
+            <div class="col d-flex justify-content-center">
+              <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(7)">MAVI016</button>
+              <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(8)">MAVI003</button>
+              <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(9)">MAVI006</button>
+              <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(10)">MAVI010</button>
+              <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(11)">MAVI012</button>
+              <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(12)">MAVI002</button>
+              <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(13)">MAVI003</button>
+              <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(14)">MAVI005</button>
+              <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(15)">MAVI019</button>
+              <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(16)">MAVI007</button>
+            </div>
+          </div>
             
-          
           </div>
         </div>
 
         <div class="row">
-          <div class="col d-flex justify-content-center">
-            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork(0)">MAVI001</button>
-            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork(1)">MAVI004</button>
-            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork(2)">MAVI009</button>
-            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork(3)">MAVI015</button>
-            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork(4)">MAVI018</button>
-            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork(5)">MAVI014</button>
-            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork(6)">MAVI011</button>
-          </div>
+          
         </div>
     
       </div>
@@ -41,9 +69,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.js"></script>
 <script src="node_modules/echarts-leaflet/dist/echarts-leaflet.js"></script>
 <script src="./js/jquery-1.8.3.min.js"></script>
+<script src="./js/logo.js"></script>
 <script src="./js/script.js"></script>
-<script src="./js/anzahlZweiräder.js"></script>
-<script src="./js/temperatur.js"></script>
+<script src="./js/anzahlFahrraeder.js"></script>
+<script src="./js/anzahlMotorraeder.js"></script>
+<script src="./js/tempLoRa.js"></script>
 
     
   </body>
