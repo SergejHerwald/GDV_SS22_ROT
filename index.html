@@ -58,9 +58,16 @@
         </div>
 
         <div class="row">
-          
+             <div class="col d-flex justify-content-center">
+            <div id="tempChart" class="abstandRechts, abstandOben" style="width: 1000px;height: 500px;"></div>
         </div>
-    
+      <p>Wetter</p>
+      <div class="col d-flex justify-content-center">
+          <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="getTempChart(0)">MAVI016</button>
+              <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="getTempChart(1)">MAVI003</button>
+              <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="getTempChart(2)">MAVI006</button>
+              <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="getPrecipitationChart()">Niederschlag</button>
+      </div>
       </div>
     </div>
 
@@ -73,6 +80,7 @@
 <script src="./js/script.js"></script>
 <script src="./js/anzahlFahrraeder.js"></script>
 <script src="./js/anzahlMotorraeder.js"></script>
+<script src="./js/getWetterCharts.js"></script>
 <script src="./js/tempLoRa.js"></script>
 
     
