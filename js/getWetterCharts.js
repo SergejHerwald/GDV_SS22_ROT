@@ -1,4 +1,5 @@
-var tempChart = echarts.init(document.getElementById("tempChart"));
+
+var tempChart = echarts.init(document.getElementById("tempChart"), 'dark');
 
 let wetterArr = [ {
 name: "0085EF4F08FF5288",
@@ -21,13 +22,12 @@ timeSeriesId: "08febe79-4d7d-41b6-a09a-d7788ae582ec"},
 
 ]
 
-
-
-function getData(tsID, startDate, endDate, interval, limit, func){
+function getData(tsID, startDate, endDate, interval, limit, func= 'avg', lora= false, sort = 'asc') {
 data = [];
 console.log(startDate);
 console.log(endDate);
-var url = `https://api.mvvsmartcities.com/v3/timeseries?Ocp-Apim-Subscription-Key=8e3b5fe2c8644919ae63394238b89644&timeSeriesId=${tsID}&func=${func}&interval=${interval}&timezone=Europe%2FBerlin&output=split&limit=${limit}&metadata=false&startDate=${startDate}&endDate=${endDate}&sort=asc`;
+lora? api_key = "b64af05bfac248888c1ff5681daab321": api_key = "8e3b5fe2c8644919ae63394238b89644";
+var url = `https://api.mvvsmartcities.com/v3/timeseries?Ocp-Apim-Subscription-Key=${api_key}&timeSeriesId=${tsID}&func=${func}&interval=${interval}&timezone=Europe%2FBerlin&output=split&limit=${limit}&metadata=false&from=${startDate}&to=${endDate}&sort=${sort}`;
 console.log(url);
 var promise = new Promise((resolve,reject) =>{
     $.getJSON(
@@ -47,10 +47,13 @@ url,
   console.log(promise);
   return promise;
 }
-// getTemp(wetterArr[0].timeSeriesId, "2022-01-01T00%3A00%3A00.000Z", "2022-05-24T00%3A00%3A00.000Z").then(res =>{
-//     console.log(res);
-//     return res;
-//     });
+function TimestampstoString(response){
+  timestamps = [];
+  response.forEach(element => {
+    date  = new Date(element);
+      timestamps.push(date.toLocaleDateString("de-DE"));});
+  return timestamps;
+}
 async function getTempChart(input){
     try{
     switch (input){
@@ -99,6 +102,14 @@ async function getTempChart(input){
           saveAsImage: {}
         }
       },
+       dataZoom: [
+          {
+            startValue: "2022-01-01",
+          },
+          {
+            type: "inside",
+          },
+        ],
       series: [
         {
           type: "line",
@@ -118,7 +129,8 @@ async function getTempChart(input){
 async function getPrecipitationChart(){
 try{
 const response = await getData(precipitationArr[0].timeSeriesId, "2022-01-01T00%3A00%3A00.000Z", "2022-05-24T00%3A00%3A00.000Z", 'd', 10000, 'avg');
-  console.log(response);
+timestamps = TimestampstoString(response[0].timestamps);
+
   tempChart.setOption(
     (option = {
       title: {
@@ -135,7 +147,7 @@ const response = await getData(precipitationArr[0].timeSeriesId, "2022-01-01T00%
       },
       xAxis: {
         type: "category",
-        data: response[0].timestamps
+        data: timestamps
       },
       yAxis: {
         type: "value",
