@@ -293,7 +293,6 @@ async function buildChart(input) {
   try {
     for(let item of loRaDeviceIDs){
       
-      console.log(item);
       if(item.name == input){
         temp = item.deviceId
       }
@@ -307,18 +306,18 @@ async function buildChart(input) {
       startDate,
       formattedDate);
       
+    
     tempLoRa.setOption(
       (option = {
         title: {
-          text: "Mannheim",
-          subtext: "Temperatur - LoRa Sensor: "+ input,
+          text: "Temperatur - LoRa Sensor: "+ input,
         },
         tooltip: {
           trigger: "axis",
         },
         xAxis: {
           type: "category",
-          data: minMaxTemp[0].timestamps,
+          data: timestampstoString(minMaxTemp[0].timestamps),
         },
         yAxis: {
           type: "value",
@@ -343,24 +342,13 @@ async function buildChart(input) {
         ],
         series: [
           {
-            name: 'niedrigste',
-            type: "line",
-            smooth: false,
-            data: minMaxTemp[0].values,
-          },
-          {
             name: 'temperatur',
             type: 'line',
+            color: '#FF0000',
             smooth: false,
             data: minMaxTemp[1].values,
             
           },
-          {
-            name: 'höchste',
-            type: 'line',
-            smooth: false,
-            data: minMaxTemp[2].values,
-          }
         ],
       })
     );

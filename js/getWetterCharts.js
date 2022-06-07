@@ -24,11 +24,9 @@ timeSeriesId: "08febe79-4d7d-41b6-a09a-d7788ae582ec"},
 
 function getData(tsID, startDate, endDate, interval, limit, func= 'avg', lora= false, sort = 'asc') {
 data = [];
-console.log(startDate);
-console.log(endDate);
 lora? api_key = "b64af05bfac248888c1ff5681daab321": api_key = "8e3b5fe2c8644919ae63394238b89644";
-var url = `https://api.mvvsmartcities.com/v3/timeseries?Ocp-Apim-Subscription-Key=${api_key}&timeSeriesId=${tsID}&func=${func}&interval=${interval}&timezone=Europe%2FBerlin&output=split&limit=${limit}&metadata=false&from=${startDate}&to=${endDate}&sort=${sort}`;
-console.log(url);
+var url = `https://api.mvvsmartcities.com/v3/timeseries?Ocp-Apim-Subscription-Key=${api_key}&timeSeriesId=${tsID}&func=${func}&interval=${interval}&timezone=Europe%2FBerlin&output=split&metadata=false&from=${startDate}&to=${endDate}&sort=${sort}`;
+
 var promise = new Promise((resolve,reject) =>{
     $.getJSON(
 url,
@@ -44,10 +42,9 @@ url,
       }
     );
   });
-  console.log(promise);
   return promise;
 }
-function TimestampstoString(response){
+function timestampstoString(response){
   timestamps = [];
   response.forEach(element => {
     date  = new Date(element);
@@ -59,23 +56,27 @@ async function getTempChart(input){
     switch (input){
         case 0:
             weatherStation = "0085EF4F08FF5288";
+            stationName= "Wetterstation 1";
             break;  
         case 1:
             weatherStation = "WeatherData2875376";
+            stationName = "Wetterstation 2";
             break;
         case 2: 
             weatherStation = "WeatherData2873891";
+            stationName = "Wetterstation 3";
+
             break;
-        default :
+        default:
             weatherStation = "0085EF4F08FF5288";
-    
+            stationName = "Wetterstation 1"
     }
     const response = await getData(wetterArr[input].timeSeriesId, "2022-01-01T00%3A00%3A00.000Z", "2022-05-24T00%3A00%3A00.000Z", 'M',1000, 'avg');
   console.log(response);
   tempChart.setOption(
     (option = {
       title: {
-        text: "Mannheim - "+ weatherStation +" - Temperatur",
+        text: "Mannheim - "+ stationName +" - Temperatur",
     
       },
       tooltip:{
@@ -88,11 +89,15 @@ async function getTempChart(input){
       },
       xAxis: {
         type: "category",
-        data: response[0].timestamps
+        data: timestampstoString(response[0].timestamps),
       },
       yAxis: {
-        type: "value",
-      },toolbox: {
+        type: 'value',
+        axisLabel: {
+          formatter: '{value} mm/h'
+        }
+      },
+      toolbox: {
         right: 10,
         feature: {
           dataZoom: {
@@ -128,10 +133,8 @@ async function getTempChart(input){
 }
 async function getPrecipitationChart(){
 try{
-const response = await getData(precipitationArr[0].timeSeriesId, "2022-01-01T00%3A00%3A00.000Z", "2022-05-24T00%3A00%3A00.000Z", 'd', 10000, 'avg');
-timestamps = TimestampstoString(response[0].timestamps);
-
-  tempChart.setOption(
+const response = await getData(precipitationArr[0].timeSeriesId, "2022-01-01T00%3A00%3A00.000Z", "2022-05-24T00%3A00%3A00.000Z", 'd', 'avg');
+tempChart.setOption(
     (option = {
       title: {
         text: "Mannheim - Niederschlag",
@@ -147,7 +150,7 @@ timestamps = TimestampstoString(response[0].timestamps);
       },
       xAxis: {
         type: "category",
-        data: timestamps
+        data:  timestampstoString(response[0].timestamps)
       },
       yAxis: {
         type: "value",

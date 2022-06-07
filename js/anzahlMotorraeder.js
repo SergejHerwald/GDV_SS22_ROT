@@ -197,7 +197,7 @@ async function doWork2(input) {
     let kamera = "";
     let auswahl = 0;
     switch (input) {
-      case 0:
+      case "mavi001":
         kamera = "mavi001";
         auswahl =  await getTsIDsKamera(kamera);
         break;
@@ -296,11 +296,11 @@ async function doWork2(input) {
     summeMotorrad.setOption(
       (option = {
         title: {
-          text: "Mannheim - " + kamera,
+          text: kamera,
           subtext: "Anzahl Motorräder 2022 Januar - Heute",
         },
         tooltip: {
-          trigger: "axis",
+          trigger: "axis"
         },
         grid: {
           left: "5%",
@@ -309,7 +309,8 @@ async function doWork2(input) {
         },
         xAxis: {
           type: "category",
-          data: responseMotor[0].timestamps,
+          show: true,
+          data: timestampstoString(responseMotor[0].timestamps),
         },
         yAxis: {
           type: "value",
@@ -326,7 +327,7 @@ async function doWork2(input) {
         },
         dataZoom: [
           {
-            startValue: "2022-01-017",
+            startValue: "2022-01-17",
           },
           {
             type: "inside",
@@ -336,6 +337,7 @@ async function doWork2(input) {
           {
             type: "line",
             smooth: true,
+            color: '#E8BC75',
             data: temp,
             markLine: {
               data: [{ type: 'average', name: 'Avg' }]
@@ -348,4 +350,5 @@ async function doWork2(input) {
     console.log(err);
   }
 }
+summeMotorrad.group = 'zweiraeder';
 doWork2(0);

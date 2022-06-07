@@ -12,8 +12,8 @@
     <h1> Gruppe Rot</h1>
     <div class="container">
       <div class="main">
-        <!--<div id="logo" style="width: auto; height: 100px"></div>
-        <div id="main" style="width: 100%;height: 500px;"></div>-->
+        <div id="logo" style="width: auto; height: 100px"></div>
+        <div id="main" style="width: 100%;height: 500px;"></div>
         <div id="tempLoRa" class="abstandOben" style="height: 200px; width: auto"></div>
         <p>Um Zwischen den LoRa Sensoren umzuschalten, den Namen des Gerätes in folgendem Format eingeben:
            <input type="text" placeholder="T-001" id="setLoRaDevice">
@@ -28,26 +28,56 @@
             <div id="summeFahrrad" class="abstandRechts, abstandOben" style="width: 1000px;height: 500px;"></div>
             <div id="summeMotorrad" class="abstandLinks, abstandOben" style="width: 1000px;height: 500px;"></div>
           </div>
+          <form action='#' onsubmit="doWork(this)">
+            <label for="zweiraeder">Kamera auswählen:</label>
+            <select name="bikes" id="bikes">
+              <optgroup label="Fahrräder und Motorräder">
+                <option value="mavi001">MAVI001</option>
+                <option value="mavi004">MAVI004</option>
+                <option value="mavi009">MAVI009</option>
+                <option value="mavi011">MAVI011</option>
+                <option value="mavi015">MAVI015</option>
+                <option value="mavi014">MAVI014</option>
+                <option value="mavi018">MAVI018</option>
+              </optgroup>
+              <optgroup label="Nur Motorräder">
+                <option value="mavi002">MAVI002</option>
+                <option value="mavi003">MAVI003</option>
+                <option value="mavi005">MAVI005</option>
+                <option value="mavi006">MAVI006</option>
+                <option value="mavi007">MAVI007</option>
+                <option value="mavi010">MAVI010</option>
+                <option value="mavi012">MAVI012</option>
+                <option value="mavi013">MAVI013</option>
+                <option value="mavi016">MAVI016</option>
+                <option value="mavi019">MAVI019</option>
+
+              </optgroup>
+            </select>
+            
+            <input type="submit" value="Submit">
+          </form>
           <p>Fahrräder und Motorräder</p>
+
           <div class="col d-flex justify-content-center">
-            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork(0),doWork2(0)">MAVI001</button>
-            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork(1),doWork2(1)">MAVI004</button>
-            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork(2),doWork2(2)">MAVI009</button>
-            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork(3),doWork2(3)">MAVI015</button>
-            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork(4),doWork2(4)">MAVI018</button>
-            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork(5),doWork2(5)">MAVI014</button>
-            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork(6),doWork2(6)">MAVI011</button>
+            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi001'),doWork2(0)">MAVI001</button>
+            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi004'),doWork2(1)">MAVI004</button>
+            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi009'),doWork2(2)">MAVI009</button>
+            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi015'),doWork2(3)">MAVI015</button>
+            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi018'),doWork2(4)">MAVI018</button>
+            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi014'),doWork2(5)">MAVI014</button>
+            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi011'),doWork2(6)">MAVI011</button>
           </div>
           <div>
             <p>Nur Motorraeder</p>
             <div class="col d-flex justify-content-center">
-              <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(7)">MAVI016</button>
+              <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(12)">MAVI002</button>
               <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(8)">MAVI003</button>
               <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(9)">MAVI006</button>
+              <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(7)">MAVI016</button>
+              <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(13)">MAVI013</button>
               <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(10)">MAVI010</button>
               <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(11)">MAVI012</button>
-              <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(12)">MAVI002</button>
-              <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(13)">MAVI003</button>
               <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(14)">MAVI005</button>
               <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(15)">MAVI019</button>
               <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(16)">MAVI007</button>
