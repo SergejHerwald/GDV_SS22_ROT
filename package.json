@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "baidu-map": "^0.1.4",
-    "echarts-leaflet": "^1.1.0"
+    "echarts-leaflet": "^1.1.0",
+    "fs-web": "^1.0.1"
   }
 }

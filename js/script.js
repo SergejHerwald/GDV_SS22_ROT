@@ -1,4 +1,4 @@
-function build(geoCoordMap, data) {
+function buildMap(geoCoordMap,data){
   var convertData = function (data) {
     var res = [];
     for (var i = 0; i < data.length; i++) {
@@ -59,7 +59,7 @@ function build(geoCoordMap, data) {
           },
           emphasis: {
             show: true,
-          },
+          }
         },
         itemStyle: {
           normal: {
@@ -93,6 +93,9 @@ function build(geoCoordMap, data) {
       },
     ],
   });
+  myChart.on('click',(params)=>{
+    console.log(params)
+  })
 
   (function () {
     var throttle = function (type, name, obj) {
@@ -121,75 +124,197 @@ function build(geoCoordMap, data) {
   });
 }
 
-function getTrafficSensors() {
-  let devices = [];
-  let geoCoordMap = {};
-  let data = [];
-  // 1 GET: get all mavi devices und put them in array devices
-  $.getJSON(
-    "https://api.mvvsmartcities.com/v3/device?Ocp-Apim-Subscription-Key=8e3b5fe2c8644919ae63394238b89644",
-    {},
-    function (res) {
-      for (let item of res) {
-        if (item.deviceId[0] == "m") {
-          //.log("DEVICE:", item)
-          devices.push(item.deviceId);
-          if (item["location"] && item["location"]["coordinates"]) {
-            if (!geoCoordMap[item.name]) {
-              geoCoordMap[item.name] = [];
-            }
-            geoCoordMap[item.name][0] = item["location"]["coordinates"][0];
-            geoCoordMap[item.name][1] = item["location"]["coordinates"][1];
-            data.push({
-              name: item.name,
-              value: 0,
-            });
-          }
-        }
-      }
-      build(geoCoordMap, data);
-      let fahrr = [];
-      let motor = [];
 
-      const get_tsd = (device) => {
-        return new Promise((resolve) => {
-          $.getJSON(
-            `https://api.mvvsmartcities.com/v3/device/timeseriesdefinition?Ocp-Apim-Subscription-Key=8e3b5fe2c8644919ae63394238b89644&deviceId=${device}`,
-            {},
-            function (res) {
-              for (let i of res[0].timeSeriesDefinitions) {
-                if (i.name.includes("Motorrad"))
-                  motor.push({
-                    name: device,
-                    timeSeriesId: i.timeSeriesId,
-                  });
-                else if (i.name.includes("Fahrr"))
-                  fahrr.push({
-                    name: device,
-                    timeSeriesId: i.timeSeriesId,
-                  });
-              }
-              resolve(motor, fahrr);
-            }
-          );
-        });
-      };
-
-      let promises = [];
-      for (let device of devices) promises.push(get_tsd(device));
-
-      Promise.all(promises)
-        .then((res) => {
-          getData(fahrr, motor);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  );
+function start() {
+  fetch("../data/mavi_coordinates.json")
+  .then(response => {
+     return response.json();
+  })
+  .then(jsondata => {
+    buildMap(jsondata.geoCoordMap, jsondata.data)
+  });
 }
 
-function getData(fahrr, motor) {
-}
+start();
 
-getTrafficSensors();
+
+
+
+
+
+
+
+
+
+
+// function getTrafficSensors() {
+//   let devices = [];
+//   let geoCoordMap = {};
+//   let data = [];
+//   // 1 GET: get all mavi devices und put them in array devices
+//   $.getJSON(
+//     "https://api.mvvsmartcities.com/v3/device?Ocp-Apim-Subscription-Key=8e3b5fe2c8644919ae63394238b89644",
+//     {},
+//     function (res) {
+//       for (let item of res) {
+//         if (item.deviceId[0] == "m") {
+//           //.log("DEVICE:", item)
+//           devices.push(item.deviceId);
+//           if (item["location"] && item["location"]["coordinates"]) {
+//             if (!geoCoordMap[item.name]) {
+//               geoCoordMap[item.name] = [];
+//             }
+//             geoCoordMap[item.name][0] = item["location"]["coordinates"][0];
+//             geoCoordMap[item.name][1] = item["location"]["coordinates"][1];
+//             data.push({
+//               name: item.name,
+//               value: 0,
+//             });
+//           }
+//         }
+//       }
+//       const maviData = {geoCoordMap, data}
+
+//       let fahrr = [];
+//       let motor = [];
+
+//       const get_tsd = (device) => {
+//         return new Promise((resolve) => {
+//           $.getJSON(
+//             `https://api.mvvsmartcities.com/v3/device/timeseriesdefinition?Ocp-Apim-Subscription-Key=8e3b5fe2c8644919ae63394238b89644&deviceId=${device}`,
+//             {},
+//             function (res) {
+//               for (let i of res[0].timeSeriesDefinitions) {
+//                 if (i.name.includes("Motorrad"))
+//                   motor.push({
+//                     name: device,
+//                     timeSeriesId: i.timeSeriesId,
+//                   });
+//                 else if (i.name.includes("Fahrr"))
+//                   fahrr.push({
+//                     name: device,
+//                     timeSeriesId: i.timeSeriesId,
+//                   });
+//               }
+//               resolve(motor, fahrr);
+//             }
+//           );
+//         });
+//       };
+
+//       let promises = [];
+//       for (let device of devices) promises.push(get_tsd(device));
+
+//       Promise.all(promises)
+//         .then((res) => {
+//           const data = JSON.stringify(motor);
+//           console.log(data)
+//         })
+//         .catch((error) => {
+//           console.log(error);
+//         });
+//     }
+//   );
+// }
+
+// getTrafficSensors();
+
+
+
+
+// function getTrafficSensors() {
+//   let devices = [];
+//   let lora_coordinates = {};
+//   let have_not_coordinates = []
+//   let data = [];
+
+//   let lora_counter = 0;
+//   let extern_counter = 0;
+
+//   // 1 GET: get all mavi devices und put them in array devices
+//   $.getJSON(
+//     "https://api.mvvsmartcities.com/v3/device?Ocp-Apim-Subscription-Key=b64af05bfac248888c1ff5681daab321",
+//     {},
+//     function (res) {
+//       console.log ("LENGTH",res.length)
+//       for (let item of res) {
+//         if (item.deviceType == "LoRa") {
+//           lora_counter++;
+//           //.log("DEVICE:", item)
+//           devices.push(item.deviceId);
+//           if (item["location"] && item["location"]["coordinates"]) {
+//             if(item["location"]["coordinates"][0] != null && item["location"]["coordinates"][0] != ''){
+
+//               if (!lora_coordinates[item.name]) {
+//                 lora_coordinates[item.name] = [];
+//               }
+              
+//               lora_coordinates[item.name][0] = item["location"]["coordinates"][0];
+//               lora_coordinates[item.name][1] = item["location"]["coordinates"][1];
+//             } else {
+//               have_not_coordinates.push(item.name)
+//             }
+//             data.push({
+//               name: item.name,
+//               value: 0,
+//             });
+//           } else {
+//             have_not_coordinates.push(item.name)
+//           }
+//         } else {
+//           extern_counter++;
+//         }
+//       }
+
+//       console.log("lora_counter",lora_counter)
+//       console.log("extern_counter",extern_counter)
+//       console.log(lora_coordinates)
+//       console.log(have_not_coordinates)
+
+//       console.log(JSON.stringify(lora_coordinates))
+
+//       const maviData = {geoCoordMap, data}
+
+//       let fahrr = [];
+//       let motor = [];
+
+//       const get_tsd = (device) => {
+//         return new Promise((resolve) => {
+//           $.getJSON(
+//             `https://api.mvvsmartcities.com/v3/device/timeseriesdefinition?Ocp-Apim-Subscription-Key=8e3b5fe2c8644919ae63394238b89644&deviceId=${device}`,
+//             {},
+//             function (res) {
+//               for (let i of res[0].timeSeriesDefinitions) {
+//                 if (i.name.includes("Motorrad"))
+//                   motor.push({
+//                     name: device,
+//                     timeSeriesId: i.timeSeriesId,
+//                   });
+//                 else if (i.name.includes("Fahrr"))
+//                   fahrr.push({
+//                     name: device,
+//                     timeSeriesId: i.timeSeriesId,
+//                   });
+//               }
+//               resolve(motor, fahrr);
+//             }
+//           );
+//         });
+//       };
+
+//       let promises = [];
+//       for (let device of devices) promises.push(get_tsd(device));
+
+//       Promise.all(promises)
+//         .then((res) => {
+//           const data = JSON.stringify(motor);
+//           console.log(data)
+//         })
+//         .catch((error) => {
+//           console.log(error);
+//         });
+//     }
+//   );
+// }
+
+// getTrafficSensors();
