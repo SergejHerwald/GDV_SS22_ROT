@@ -51,7 +51,7 @@ function getSumFahrrad (tsID, startDate, endDate){
 
 
 let sumFahrr = [];
-let startDate = "2022-01-17T00%3A00%3A00.000Z";
+let startDate = "2022-01-17T08%3A00%3A00.000Z";
 function setStartDate(valStartDate){
   return new Promise ((resolve, reject) =>{
     resolve(valStartDate);
@@ -115,7 +115,7 @@ async function doWork(input){
         auswahl=0;
         break;
     }
-  const response = await getSumFahrrad(fahrrArr[auswahl].timeSeriesId, startDate, formattedDate);
+  const responseFahrr = await getSumFahrrad(fahrrArr[auswahl].timeSeriesId, startDate, formattedDate);
   summeFahrrad.setOption(
     (option = {
       title: {
@@ -127,7 +127,7 @@ async function doWork(input){
       },
       xAxis: {
         type: "category",
-        data: timestampstoString(response[0].timestamps)
+        data: timestampstoString(responseFahrr[0].timestamps)
       },
       yAxis: {
         type: "value",
@@ -154,7 +154,7 @@ async function doWork(input){
           type: "line",
           smooth: true,
           color: '#6AD368',
-          data: response[0].values,
+          data: responseFahrr[0].values,
           markLine: {
             data: [{ type: 'average', name: 'Avg' }]
           }

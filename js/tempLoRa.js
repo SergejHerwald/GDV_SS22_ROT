@@ -321,6 +321,7 @@ async function buildChart(input) {
         },
         yAxis: {
           type: "value",
+        
         },
         toolbox: {
           right: 10,

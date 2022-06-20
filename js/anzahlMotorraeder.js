@@ -191,83 +191,66 @@ function getTsIDsKamera(kamera){
 });
 }
 
+
 async function doWork2(input) {
 
   try {
-    let kamera = "";
     let auswahl = 0;
+    let nummer = 0;
     switch (input) {
       case "mavi001":
-        kamera = "mavi001";
-        auswahl =  await getTsIDsKamera(kamera);
+        auswahl =  await getTsIDsKamera(input);
         break;
-      case 1:
-        kamera = "mavi004";
-        auswahl =  await getTsIDsKamera(kamera);
+      case "mavi004":
+        auswahl =  await getTsIDsKamera(input);
         break;
-      case 2:
-        kamera = "mavi009";
-        auswahl =  await getTsIDsKamera(kamera);
+      case "mavi009":
+        auswahl =  await getTsIDsKamera(input);
         break;
-      case 3:
-        kamera = "mavi015";
-        auswahl =  await getTsIDsKamera(kamera);
+      case "mavi015":
+        auswahl =  await getTsIDsKamera(input);
         break;
-      case 4:
-        kamera = "mavi018";
-        auswahl =  await getTsIDsKamera(kamera);
+      case "mavi018":
+        auswahl =  await getTsIDsKamera(input);
         break;
-      case 5:
-        kamera = "mavi014";
-        auswahl =  await getTsIDsKamera(kamera);
+      case "mavi014":
+        auswahl =  await getTsIDsKamera(input);
         break;
-      case 6:
-        kamera = "mavi011";
-        auswahl =  await getTsIDsKamera(kamera);
+      case "mavi011":
+        auswahl =  await getTsIDsKamera(input);
         break;
-      case 7:
-        kamera = "mavi016";
-        auswahl =  await getTsIDsKamera(kamera);
+      case "mavi016":
+        auswahl =  await getTsIDsKamera(input);
         break;
-      case 8:
-        kamera = "mavi003";
-        auswahl =  await getTsIDsKamera(kamera);
+      case "mavi003":
+        auswahl =  await getTsIDsKamera(input);
         break;
-      case 9:
-        kamera = "mavi006";
-        auswahl =  await getTsIDsKamera(kamera);
+      case "mavi006":
+        auswahl =  await getTsIDsKamera(input);
         break;
-      case 10:
-        kamera = "mavi010";
-        auswahl =  await getTsIDsKamera(kamera);
+      case "mavi010":
+        auswahl =  await getTsIDsKamera(input);
         break;
-      case 11:
-        kamera = "mavi012";
-        auswahl =  await getTsIDsKamera(kamera);
+      case "mavi012":
+        auswahl =  await getTsIDsKamera(input);
         break;
-      case 12:
-        kamera = "mavi002";
-        auswahl =  await getTsIDsKamera(kamera);
+      case "mavi002":
+        auswahl =  await getTsIDsKamera(input);
         break;
-      case 13:
-        kamera = "mavi013";
-        auswahl =  await getTsIDsKamera(kamera);
+      case "mavi013":
+        auswahl =  await getTsIDsKamera(input);
         break;
-      case 14:
-        kamera = "mavi005";
-        auswahl =  await getTsIDsKamera(kamera);
+      case "mavi005":
+        auswahl =  await getTsIDsKamera(input);
         break;
-      case 15:
-        kamera = "mavi019";
-        auswahl =  await getTsIDsKamera(kamera);
+      case "mavi019":
+        auswahl =  await getTsIDsKamera(input);
         break;
-      case 16:
-        kamera = "mavi007";
-        auswahl =  await getTsIDsKamera(kamera);
+      case "mavi007":
+        auswahl =  await getTsIDsKamera(input);
         break;
-      default:
-        kamera = "mavi001";
-        auswahl = await getTsIDsKamera(kamera);
+      default :
+        auswahl = await getTsIDsKamera("mavi001");
         break;
     }
     var responseMotor = await getSumMotorrad(
@@ -296,7 +279,7 @@ async function doWork2(input) {
     summeMotorrad.setOption(
       (option = {
         title: {
-          text: kamera,
+          text: input,
           subtext: "Anzahl Motorräder 2022 Januar - Heute",
         },
         tooltip: {
@@ -342,7 +325,7 @@ async function doWork2(input) {
             markLine: {
               data: [{ type: 'average', name: 'Avg' }]
             }
-          },
+          }
         ],
       })
     );

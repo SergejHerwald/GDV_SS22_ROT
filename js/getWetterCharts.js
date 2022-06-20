@@ -26,7 +26,7 @@ function getData(tsID, startDate, endDate, interval, limit, func= 'avg', lora= f
 data = [];
 lora? api_key = "b64af05bfac248888c1ff5681daab321": api_key = "8e3b5fe2c8644919ae63394238b89644";
 var url = `https://api.mvvsmartcities.com/v3/timeseries?Ocp-Apim-Subscription-Key=${api_key}&timeSeriesId=${tsID}&func=${func}&interval=${interval}&timezone=Europe%2FBerlin&output=split&metadata=false&from=${startDate}&to=${endDate}&sort=${sort}`;
-
+console.log(url);
 var promise = new Promise((resolve,reject) =>{
     $.getJSON(
 url,
@@ -48,7 +48,7 @@ function timestampstoString(response){
   timestamps = [];
   response.forEach(element => {
     date  = new Date(element);
-      timestamps.push(date.toLocaleDateString("de-DE"));});
+      timestamps.push(date.toLocaleDateString("de-DE", {hour:"numeric" }));});
   return timestamps;
 }
 async function getTempChart(input){
@@ -71,7 +71,7 @@ async function getTempChart(input){
             weatherStation = "0085EF4F08FF5288";
             stationName = "Wetterstation 1"
     }
-    const response = await getData(wetterArr[input].timeSeriesId, "2022-01-01T00%3A00%3A00.000Z", "2022-05-24T00%3A00%3A00.000Z", 'M',1000, 'avg');
+    const response = await getData(wetterArr[input].timeSeriesId, "2022-01-01T00%3A00%3A00.000Z", "2022-05-24T00%3A00%3A00.000Z", 'H',100000, 'avg');
   console.log(response);
   tempChart.setOption(
     (option = {
@@ -89,6 +89,7 @@ async function getTempChart(input){
       },
       xAxis: {
         type: "category",
+        show: true,
         data: timestampstoString(response[0].timestamps),
       },
       yAxis: {
@@ -109,7 +110,7 @@ async function getTempChart(input){
       },
        dataZoom: [
           {
-            startValue: "2022-01-01",
+            startValue: "2022-01-17",
           },
           {
             type: "inside",
@@ -118,6 +119,7 @@ async function getTempChart(input){
       series: [
         {
           type: "line",
+          smooth: true,
           color: '#FF0000',
           data: response[0].values,
         },
@@ -133,7 +135,7 @@ async function getTempChart(input){
 }
 async function getPrecipitationChart(){
 try{
-const response = await getData(precipitationArr[0].timeSeriesId, "2022-01-01T00%3A00%3A00.000Z", "2022-05-24T00%3A00%3A00.000Z", 'd', 'avg');
+const response = await getData(precipitationArr[0].timeSeriesId, startDate, "2022-05-24T00%3A00%3A00.000Z", 'H', 'avg');
 tempChart.setOption(
     (option = {
       title: {
@@ -154,7 +156,8 @@ tempChart.setOption(
       },
       yAxis: {
         type: "value",
-      },toolbox: {
+      },
+      toolbox: {
         right: 10,
         feature: {
           dataZoom: {
@@ -164,7 +167,14 @@ tempChart.setOption(
           saveAsImage: {}
         }
       },
- 
+      dataZoom: [
+        {
+          startValue: "2022-01-17",
+        },
+        {
+          type: "inside",
+        },
+      ],
       series: [
         {
           type: "line",

@@ -12,9 +12,10 @@
     <h1> Gruppe Rot</h1>
     <div class="container">
       <div class="main">
-        <div id="logo" style="width: auto; height: 100px"></div>
+        <!--<div id="logo" style="width: auto; height: 100px"></div>-->
         <div id="main" style="width: 100%;height: 500px;"></div>
-        <div id="tempLoRa" class="abstandOben" style="height: 200px; width: auto"></div>
+        <div id="summeZweirrad" class="abstandLinks, abstandOben" style="width: auto;height: 500px;"></div>
+        <div id="tempLoRa" class="abstandOben" style="height: 500px; width: auto"></div>
         <p>Um Zwischen den LoRa Sensoren umzuschalten, den Namen des Gerätes in folgendem Format eingeben:
            <input type="text" placeholder="T-001" id="setLoRaDevice">
            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="buildChart(document.getElementById('setLoRaDevice').value)">Los!</button> <br>
@@ -25,8 +26,8 @@
         
         <div class="row">
           <div class="col d-flex justify-content-center">
-            <div id="summeFahrrad" class="abstandRechts, abstandOben" style="width: 1000px;height: 500px;"></div>
-            <div id="summeMotorrad" class="abstandLinks, abstandOben" style="width: 1000px;height: 500px;"></div>
+          <div id="summeFahrrad" class="abstandRechts, abstandOben" style="width: auto;height: 500px;"></div>
+          <div id="summeMotorrad" class="abstandLinks, abstandOben" style="width: auto;height: 500px;"></div>
           </div>
           <form action='#' onsubmit="doWork(this)">
             <label for="zweiraeder">Kamera auswählen:</label>
@@ -57,16 +58,16 @@
             
             <input type="submit" value="Submit">
           </form>
-          <p>Fahrräder und Motorräder</p>
+          <!--<p>Fahrräder und Motorräder</p>
 
           <div class="col d-flex justify-content-center">
-            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi001'),doWork2(0)">MAVI001</button>
-            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi004'),doWork2(1)">MAVI004</button>
-            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi009'),doWork2(2)">MAVI009</button>
-            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi015'),doWork2(3)">MAVI015</button>
-            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi018'),doWork2(4)">MAVI018</button>
-            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi014'),doWork2(5)">MAVI014</button>
-            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi011'),doWork2(6)">MAVI011</button>
+            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi001'),doWork2('mavi001'),doWork3('mavi001')">MAVI001</button>
+            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi004'),doWork2('mavi004'),doWork3('mavi004')">MAVI004</button>
+            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi009'),doWork2('mavi009'),doWork3('mavi009')">MAVI009</button>
+            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi015'),doWork2('mavi015'),doWork3('mavi015')">MAVI015</button>
+            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi018'),doWork2('mavi018'),doWork3('mavi018')">MAVI018</button>
+            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi014'),doWork2('mavi014'),doWork3('mavi014')">MAVI014</button>
+            <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi011'),doWork2('mavi011'),doWork3('mavi011')">MAVI011</button>
           </div>
           <div>
             <p>Nur Motorraeder</p>
@@ -83,6 +84,7 @@
               <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork2(16)">MAVI007</button>
             </div>
           </div>
+        -->
             
           </div>
         </div>
@@ -96,7 +98,7 @@
           <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="getTempChart(0)">Temp1</button>
               <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="getTempChart(1)">Temp2</button>
               <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="getTempChart(2)">Temp3</button>
-              <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="getPrecipitationChart()">Niederschlag</button>
+              <!--<button type="button" class="btn btn-warning btn-sm btn-filter" onclick="getPrecipitationChart()">Niederschlag</button>-->
       </div>
       </div>
     </div>
@@ -113,6 +115,7 @@
 <script src="./js/anzahlMotorraeder.js"></script>
 <script src="./js/getWetterCharts.js"></script>
 <script src="./js/tempLoRa.js"></script>
+<script src="./js/anzahlZweiraeder.js"></script>
 
     
   </body>
