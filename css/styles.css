@@ -8,7 +8,8 @@
 }
 
 body{
-    background-color: darkslategray;
+    background-color: darkslategrey;
+    
 }
 
 .abstandOben{
@@ -21,3 +22,4 @@ body{
 .abstandLinks{
     margin: 0px 0px 0px 10px;
 }
+
