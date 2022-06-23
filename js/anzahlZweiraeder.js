@@ -152,11 +152,6 @@ let fahrrArr = await fetch("./data/mavi_fahrrad_sensors.json").then(response => 
         tooltip: {
           trigger: "axis"
         },
-        grid: {
-          left: "5%",
-          right: "15%",
-          bottom: "10%",
-        },
         xAxis: {
           type: "category",
           show: true,

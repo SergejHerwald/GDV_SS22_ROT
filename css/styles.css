@@ -1,16 +1,24 @@
+body{
+    background-color: #212121;
+}
+
 .btn-filter{
     margin: 0 25px;
 }
 
 .main{
+    background-color: #303030;
+    margin: 0 auto;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     margin-top: 50px;
     padding: 30px;
 }
 
-body{
-    background-color: darkslategrey;
-    
-}
+
 
 .abstandOben{
     margin: 10px 0px 0px 0px;
@@ -21,5 +29,9 @@ body{
 }
 .abstandLinks{
     margin: 0px 0px 0px 10px;
+}
+
+#text{
+    color:white;
 }
 
