@@ -7,7 +7,7 @@ optionLogo = {
         left: 'center',
         top: 'center',
         style: {
-          text: 'Team Rot',
+          text: 'Title bls bla bla',
           fontSize: 80,
           fontWeight: 'bold',
           lineDash: [0, 200],
