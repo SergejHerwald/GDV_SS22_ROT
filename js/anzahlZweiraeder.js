@@ -173,7 +173,7 @@ async function doWork(input) {
         },
         yAxis: [{
             type: 'value',
-            name: 'SummeFahrräder/Stunde',
+            name: 'Fahrräder/Stunde',
             min: 0,
             max: maxValue,
           },
