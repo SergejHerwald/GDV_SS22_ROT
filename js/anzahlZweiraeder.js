@@ -1,5 +1,5 @@
 var summeZweirrad = echarts.init(document.getElementById("summeZweirrad"), 'dark');
-
+summeZweirrad.group = 'gruppe1'; 
 async function getTsIDsKamera(kamera){
   let motorArr = await fetch("./data/mavi_motorrad_sensors.json").then(response => response.json());
   return new Promise((resolve, reject) => {
@@ -143,7 +143,6 @@ let fahrrArr = await fetch("./data/mavi_fahrrad_sensors.json").then(response => 
       maxValue = maxValueFahrrad;
     }
 
-    console.log(maxValue);
     summeZweirrad.setOption(
       (option = {
         title: {
@@ -151,11 +150,6 @@ let fahrrArr = await fetch("./data/mavi_fahrrad_sensors.json").then(response => 
         },
         tooltip: {
           trigger: "axis"
-        },
-        grid: {
-          left: "5%",
-          right: "15%",
-          bottom: "10%",
         },
         xAxis: {
           type: "category",
@@ -195,7 +189,8 @@ let fahrrArr = await fetch("./data/mavi_fahrrad_sensors.json").then(response => 
         },
         dataZoom: [
           {
-            startValue: "2022-01-17",
+            start: 10,
+            end: 20
           },
           {
             type: "inside",

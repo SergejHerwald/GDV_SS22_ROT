@@ -1,4 +1,6 @@
 var tempLoRa = echarts.init(document.getElementById("tempLoRa"), 'dark');
+tempLoRa.group = 'gruppe1';
+echarts.connect('gruppe1');
 function getTSLoRa(deviceId) {
   return new Promise((resolve, reject) => {
       const loRaDevicesTimeSeries = [];
@@ -46,6 +48,8 @@ async function buildChart(input) {
   const wetterstation1 = await getTempChart(0);
   const wetterstation2 = await getTempChart(1);
   const wetterstation3 = await getTempChart(2);
+  let lenTimestampsWetterstation = Object.keys(wetterstation1[0].values).length;
+
   let temp = "0004A30B00F730D6";
   let loraDeviceIds = await fetch("./data/lora_deviceIDs.json").then(response => response.json());
   try {
@@ -65,8 +69,11 @@ async function buildChart(input) {
       'H',
       startDate,
       endDate);
-      console.log(minMaxTemp);
-      console.log(wetterstation1);
+
+  let lenValues = minMaxTemp[1].values;
+  let extendoArray = new Array(lenTimestampsWetterstation - lenValues.length);
+  extendoArray.push.apply(extendoArray,lenValues);
+  
       
     
     tempLoRa.setOption(
@@ -106,6 +113,15 @@ async function buildChart(input) {
             type: "inside",
           },
         ],
+        dataZoom: [
+          {
+            start: 10,
+            end: 20
+          },
+          {
+            type: "inside",
+          },
+        ],
         series: [
           {
             name: 'Wetterstation 1',
@@ -120,7 +136,7 @@ async function buildChart(input) {
             type: 'line',
             color: '#FF0000',
             smooth: false,
-            data: minMaxTemp[1].values,
+            data: extendoArray,
             
           },
           {
