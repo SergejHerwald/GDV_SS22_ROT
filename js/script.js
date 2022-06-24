@@ -28,7 +28,7 @@ function buildMap(geoCoordMap,data){
     },
     leaflet: {
       center: [8.467067358437684, 49.48731848203731],
-      zoom: 15,
+      zoom: 16,
       roam: true,
       layerControl: {
         position: "topright",
@@ -46,7 +46,6 @@ function buildMap(geoCoordMap,data){
     },
     series: [
       {
-        name: "pm2.5",
         type: "scatter",
         coordinateSystem: "leaflet",
         data: convertData(data),
@@ -63,33 +62,9 @@ function buildMap(geoCoordMap,data){
         },
         itemStyle: {
           normal: {
-            color: "#ddb926",
+            color: "red",
           },
         },
-      },
-      {
-        name: "Top 5",
-        type: "effectScatter",
-        coordinateSystem: "leaflet",
-        data: convertData(
-          data.sort(function (a, b) {
-            return b.value - a.value;
-          })
-        ),
-        symbolSize: 5,
-        showEffectOn: "emphasis",
-        rippleEffect: {
-          brushType: "stroke",
-        },
-        hoverAnimation: true,
-        itemStyle: {
-          normal: {
-            color: "black",
-            shadowBlur: 10,
-            shadowColor: "#333",
-          },
-        },
-        zlevel: 1,
       },
     ],
   });

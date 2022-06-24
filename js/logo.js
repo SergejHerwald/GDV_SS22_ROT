@@ -7,23 +7,23 @@ optionLogo = {
         left: 'center',
         top: 'center',
         style: {
-          text: 'Gruppe Rot',
-          fontSize: 50,
+          text: 'Title bls bla bla',
+          fontSize: 80,
           fontWeight: 'bold',
-          lineDash: [0, 20],
+          lineDash: [0, 200],
           lineDashOffset: 0,
-          fill: 'transparent',
+          fill: 'red',
           stroke: '#000',
           lineWidth: 1
         },
         keyframeAnimation: {
-          duration: 2500,
-          loop: false,
+          duration: 3000,
+          loop: true,
           keyframes: [
             {
               percent: 0.7,
               style: {
-                fill: 'transparent',
+                fill: '#8B0000',
                 lineDashOffset: 200,
                 lineDash: [200, 0]
               }
@@ -38,7 +38,7 @@ optionLogo = {
             {
               percent: 1,
               style: {
-                fill: 'yellow'
+                fill: 'black'
               }
             }
           ]
@@ -46,5 +46,5 @@ optionLogo = {
       }
     ]
   }
-}
+};
 logo.setOption(optionLogo);

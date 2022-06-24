@@ -3,38 +3,36 @@ tempLoRa.group = 'gruppe1';
 echarts.connect('gruppe1');
 function getTSLoRa(deviceId) {
   return new Promise((resolve, reject) => {
-      const loRaDevicesTimeSeries = [];
-      $.getJSON(
-        `https://api.mvvsmartcities.com/v3/device/timeseriesdefinition?Ocp-Apim-Subscription-Key=b64af05bfac248888c1ff5681daab321&deviceId=${deviceId}`,
-        {},
-        function (res) {
-          for (let item of res) {
-            for (let j = 0; j < item.timeSeriesDefinitions.length; j++) {
-              if (item.timeSeriesDefinitions[j].description.indexOf("Temperatur") > -1) {
-                loRaDevicesTimeSeries.push({
-                  timeSeries : item.timeSeriesDefinitions[j].timeSeriesId,
-                  description : item.timeSeriesDefinitions[j].description
-                });
-                
-              }
+    const loRaDevicesTimeSeries = [];
+    $.getJSON(
+      `https://api.mvvsmartcities.com/v3/device/timeseriesdefinition?Ocp-Apim-Subscription-Key=b64af05bfac248888c1ff5681daab321&deviceId=${deviceId}`, {},
+      function (res) {
+        for (let item of res) {
+          for (let j = 0; j < item.timeSeriesDefinitions.length; j++) {
+            if (item.timeSeriesDefinitions[j].description.indexOf("Temperatur") > -1) {
+              loRaDevicesTimeSeries.push({
+                timeSeries: item.timeSeriesDefinitions[j].timeSeriesId,
+                description: item.timeSeriesDefinitions[j].description
+              });
+
             }
           }
-          return resolve(loRaDevicesTimeSeries);
-          reject("Keine Daten");
         }
-      );
+        return resolve(loRaDevicesTimeSeries);
+        reject("Keine Daten");
+      }
+    );
   });
 }
 
-function getTempValuesLoRa(tsIDLoRa, tsIDLoRa2, tsIDLoRa3, func, interval, startDate, endDate){
+function getTempValuesLoRa(tsIDLoRa, tsIDLoRa2, tsIDLoRa3, func, interval, startDate, endDate) {
   return new Promise((resolve, reject) => {
-    if(tsIDLoRa !=0 && tsIDLoRa2 !=0 && tsIDLoRa3 !=0){
+    if (tsIDLoRa != 0 && tsIDLoRa2 != 0 && tsIDLoRa3 != 0) {
       var url = `https://api.mvvsmartcities.com/v3/timeseries?Ocp-Apim-Subscription-Key=b64af05bfac248888c1ff5681daab321&timeSeriesId=${tsIDLoRa}&timeSeriesId=${tsIDLoRa2}&timeSeriesId=${tsIDLoRa3}&func=${func}&interval=${interval}&from=${startDate}&to=${endDate}&timezone=Europe%2FBerlin&output=split&sort=asc`;
-    
+
     }
     $.getJSON(
-      url,
-      {},
+      url, {},
       function (res) {
         resolve(res);
         reject("Keine Daten Verfügbar");
@@ -42,6 +40,96 @@ function getTempValuesLoRa(tsIDLoRa, tsIDLoRa2, tsIDLoRa3, func, interval, start
     );
   });
 }
+
+async function getTempChart(input) {
+  try {
+    switch (input) {
+      case 0:
+        weatherStation = "0085EF4F08FF5288";
+        stationName = "Wetterstation 1";
+        break;
+      case 1:
+        weatherStation = "WeatherData2875376";
+        stationName = "Wetterstation 2";
+        break;
+      case 2:
+        weatherStation = "WeatherData2873891";
+        stationName = "Wetterstation 3";
+
+        break;
+      default:
+        weatherStation = "0085EF4F08FF5288";
+        stationName = "Wetterstation 1"
+    }
+    const response = await getData(wetterArr[input].timeSeriesId, startDate, endDate, 'H', 100000, 'avg');
+    return response;
+
+  } catch (err) {
+    console.log(err);
+  }
+
+
+}
+
+function timestampstoString(response) {
+  timestamps = [];
+  response.forEach(element => {
+    date = new Date(element);
+    timestamps.push(date.toLocaleDateString("de-DE", {
+      hour: "numeric"
+    }));
+  });
+  return timestamps;
+}
+
+function getData(tsID, startDate, endDate, interval, limit, func = 'avg', lora = false, sort = 'asc') {
+  data = [];
+  lora ? api_key = "b64af05bfac248888c1ff5681daab321" : api_key = "8e3b5fe2c8644919ae63394238b89644";
+  var url = `https://api.mvvsmartcities.com/v3/timeseries?Ocp-Apim-Subscription-Key=${api_key}&timeSeriesId=${tsID}&func=${func}&interval=${interval}&timezone=Europe%2FBerlin&output=split&metadata=false&from=${startDate}&to=${endDate}&sort=${sort}`;
+  var promise = new Promise((resolve, reject) => {
+    $.getJSON(
+      url, {},
+      function (res) {
+
+        data.push(res);
+
+        // weatherData.push(res);
+        resolve(res);
+        reject("Keine Daten Verfügbar");
+      }
+    );
+  });
+  return promise;
+}
+
+let wetterArr = [{
+    name: "0085EF4F08FF5288",
+    timeSeriesId: "4d575f40-4930-48e8-93f5-a8be9241b404"
+  },
+  {
+    name: "WeatherData2875376",
+    timeSeriesId: "1a959671-e28b-47c6-946f-eb556f04caa1"
+  },
+  {
+    name: "WeatherData2873891",
+    timeSeriesId: "644c2622-bc30-45f8-80bd-c6bab411e0c0"
+  }
+]
+
+
+
+let precipitationArr = [{
+    name: "0085EF4F08FF5288_precipitation_intensity",
+    timeSeriesId: "ed86d215-0bac-4f2d-b809-38d2f00e9129"
+  },
+  {
+    name: "0085EF4F08FF5288_precipitation_type",
+    timeSeriesId: "08febe79-4d7d-41b6-a09a-d7788ae582ec"
+  },
+
+]
+
+
 
 
 async function buildChart(input) {
@@ -53,9 +141,9 @@ async function buildChart(input) {
   let temp = "0004A30B00F730D6";
   let loraDeviceIds = await fetch("./data/lora_deviceIDs.json").then(response => response.json());
   try {
-    for(let item of loraDeviceIds){
-      
-      if(item.name == input){
+    for (let item of loraDeviceIds) {
+
+      if (item.name == input) {
         temp = item.deviceId
       }
     }
@@ -79,7 +167,7 @@ async function buildChart(input) {
     tempLoRa.setOption(
       (option = {
         title: {
-          text:"LoRa Sensor: "+ input,
+          text: "LoRa Sensor: " + input,
         },
         tooltip: {
           trigger: "axis",
@@ -93,7 +181,7 @@ async function buildChart(input) {
         },
         yAxis: {
           type: "value",
-        
+
         },
         toolbox: {
           right: 10,
@@ -105,8 +193,7 @@ async function buildChart(input) {
             saveAsImage: {},
           },
         },
-        dataZoom: [
-          {
+        dataZoom: [{
             startValue: "2022-01-017",
           },
           {
@@ -129,7 +216,7 @@ async function buildChart(input) {
             color: '#FFF000',
             smooth: false,
             data: wetterstation1[0].values,
-            
+
           },
           {
             name: 'Temp LoRa',
@@ -145,7 +232,7 @@ async function buildChart(input) {
             color: '#FF000F',
             smooth: false,
             data: wetterstation2[0].values,
-            
+
           },
           {
             name: 'Wetterstation 3',
@@ -153,7 +240,7 @@ async function buildChart(input) {
             color: '#FF00FF',
             smooth: false,
             data: wetterstation3[0].values,
-            
+
           },
         ],
       })
@@ -163,8 +250,8 @@ async function buildChart(input) {
   }
 }
 buildChart("T-001");
-$(window).on('resize', function(){
-  if(tempLoRa != null && tempLoRa != undefined){
-      tempLoRa.resize();
+$(window).on('resize', function () {
+  if (tempLoRa != null && tempLoRa != undefined) {
+    tempLoRa.resize();
   }
 });

@@ -9,96 +9,21 @@
 </head>
 
 <body>
-  <h1> Gruppe Rot</h1>
+  <!-- <h1> Gruppe Rot</h1> -->
   <div class="main">
+
+    
+    <div id="logo" style="width: 100%;height: 180px;"></div>
     <div id="main" style="width: 100%;height: 500px;"></div>
     <div id="summeZweirrad" class="abstandLinks, abstandOben" style="width: 100%;height: 500px;"></div>
-    <div id="tempLoRa" class="abstandOben" style="height: 500px; width: 100%"></div>
-    <p>Um Zwischen den LoRa Sensoren umzuschalten, den Namen des Gerätes in folgendem Format eingeben:
+    <!-- <div id="tempLoRa" class="abstandOben" style="height: 500px; width: 100%"></div> -->
+    <!-- <p id="text">Um Zwischen den LoRa Sensoren umzuschalten, den Namen des Gerätes in folgendem Format eingeben:
       <input type="text" placeholder="T-001" id="setLoRaDevice">
       <button type="button" class="btn btn-warning btn-sm btn-filter"
         onclick="buildChart(document.getElementById('setLoRaDevice').value)">Los!</button> <br>
       Hinweis: Sie können aktuell zwischen 60 geräten wechseln.
-    </p>
-
-
-
-    <div class="row">
-      <div class="col d-flex justify-content-center">
-    </div>
-      <!-- <form action='#' onsubmit="doWork(this)">
-        <label for="zweiraeder">Kamera auswählen:</label>
-        <select name="bikes" id="bikes">
-          <optgroup label="Fahrräder und Motorräder">
-            <option value="mavi001">MAVI001</option>
-            <option value="mavi004">MAVI004</option>
-            <option value="mavi009">MAVI009</option>
-            <option value="mavi011">MAVI011</option>
-            <option value="mavi015">MAVI015</option>
-            <option value="mavi014">MAVI014</option>
-            <option value="mavi018">MAVI018</option>
-          </optgroup>
-          <optgroup label="Nur Motorräder">
-            <option value="mavi002">MAVI002</option>
-            <option value="mavi003">MAVI003</option>
-            <option value="mavi005">MAVI005</option>
-            <option value="mavi006">MAVI006</option>
-            <option value="mavi007">MAVI007</option>
-            <option value="mavi010">MAVI010</option>
-            <option value="mavi012">MAVI012</option>
-            <option value="mavi013">MAVI013</option>
-            <option value="mavi016">MAVI016</option>
-            <option value="mavi019">MAVI019</option>
-
-          </optgroup>
-        </select>
-
-        <input type="submit" value="Submit">
-      </form> -->
-
-      <!-- <div class="col d-flex justify-content-center">
-        <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi001')">MAVI001</button>
-        <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi004')">MAVI004</button>
-        <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi009')">MAVI009</button>
-        <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi015')">MAVI015</button>
-        <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi018')">MAVI018</button>
-        <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi014')">MAVI014</button>
-        <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi011')">MAVI011</button>
-      </div>
-      <div>
-        <p>Nur Motorraeder</p>
-        <div class="col d-flex justify-content-center">
-          <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi002')">MAVI002</button>
-          <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi003')">MAVI003</button>
-          <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi006')">MAVI006</button>
-          <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi016')">MAVI016</button>
-          <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi013')">MAVI013</button>
-          <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi010')">MAVI010</button>
-          <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi012')">MAVI012</button>
-          <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi005')">MAVI005</button>
-          <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi019')">MAVI019</button>
-          <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="doWork('mavi007')">MAVI007</button>
-        </div>
-      </div> -->
-
-
-    </div>
+    </p> -->
   </div>
-
-   <div class="row">
-     <div class="col d-flex justify-content-center">
-     <div id="tempChart" style="width: 1000px;height: 500px;"></div>	
-    </div>
-    <!--
-    <p>Wetter</p>
-    <div class="col d-flex justify-content-center">
-      <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="getTempChart(0)">Temp1</button>
-      <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="getTempChart(1)">Temp2</button>
-      <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="getTempChart(2)">Temp3</button>
-      <button type="button" class="btn btn-warning btn-sm btn-filter" onclick="getPrecipitationChart()">Niederschlag</button>
-    </div>
-  </div> -->
-
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.1.0/dist/leaflet.css"
     integrity="sha512-wcw6ts8Anuw10Mzh9Ytw4pylW8+NAD4ch3lqm9lzAsTxg0GFeJgoAtxuCLREZSC5lUXdVyo/7yfsqFjQ4S+aKw=="
@@ -107,14 +32,15 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.js"></script>
   <script src="node_modules/echarts-leaflet/dist/echarts-leaflet.js"></script>
   <script src="./js/jquery-1.8.3.min.js"></script>
+
   <script src="./js/logo.js"></script>
-  <!-- <script src=".js/standardFunctions.js"></script> -->
   <script src="./js/anzahlFahrraeder.js"></script>
   <script src="./js/anzahlMotorraeder.js"></script>
-  <script src="./js/getWetterCharts.js"></script>
-  <script src="./js/tempLoRa.js"></script>
   <script src="./js/anzahlZweiraeder.js"></script>
   <script src="./js/script.js"></script>
+
+
+    <!-- <script src="./js/tempLoRa.js"></script> -->
 
 
 </body>
