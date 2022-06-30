@@ -144,10 +144,13 @@ async function doWork(input) {
       }
     }
 
-    console.log(responseMotor);
-    console.log(temp);
-    console.log(responseFahrr);
-
+    let shaddowArr = [];
+    let valuesArr = responseMotor[0].timestamps;
+    let lenValuesArr = valuesArr.length
+    for (let i = 0; i<= lenValuesArr; i++){
+      shaddowArr.push(1000);
+    }
+    console.log(shaddowArr);
     let maxValue;
     let maxValueMotorrad = Math.max(...temp);
     let maxValueFahrrad = Math.max(...responseFahrr[0].values);
@@ -216,6 +219,19 @@ async function doWork(input) {
           data: temp,
           color: '#FF8800'
         },
+        { // shadow bar
+          type: 'bar',
+          barWidth: '100%',
+          itemStyle: {
+              // transparent bar
+              normal: { color: 'rgba(0, 0, 0, 0)' }
+          },
+          barGap: '-100%',
+          data: shaddowArr,
+          tooltip: {
+            show: false
+         }
+      },
         {
           name: 'Summe Fahrräder',
           type: 'line',
@@ -240,7 +256,9 @@ async function doWork(input) {
 doWork("mavi001");
 
 summeZweirrad.on('click', function (params) {
-  console.log(params);
+  
+    console.log(params);
+  
 });
 
 $(window).on('resize', function () {
@@ -272,7 +290,7 @@ function getData(tsID, startDate, endDate, interval, limit, func = 'avg', lora =
 
 function timestampstoString(response) {
   timestamps = [];
-  var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  var options = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric' };
   response.forEach(element => {
     date = new Date(element);
     timestamps.push(date.toLocaleDateString("de-DE", options));
