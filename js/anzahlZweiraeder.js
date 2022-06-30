@@ -115,7 +115,6 @@ async function doWork(input) {
 
     const responseFahrr = await getSumFahrrad(fahrrArr[nummer].timeSeriesId, startDate, endDate);
     const responseRain = await getData(precipitationArr[0].timeSeriesId, startDate, "2022-05-24T00%3A00%3A00.000Z", 'H', 'avg');
-    console.log(responseMotor);
     let temp = [];
     for (let i = 0; i < responseMotor[0].values.length; i++) {
       if (responseMotor[0] && responseMotor[1] && responseMotor[2]) {
@@ -144,6 +143,11 @@ async function doWork(input) {
 
       }
     }
+
+    console.log(responseMotor);
+    console.log(temp);
+    console.log(responseFahrr);
+
     let maxValue;
     let maxValueMotorrad = Math.max(...temp);
     let maxValueFahrrad = Math.max(...responseFahrr[0].values);
@@ -153,92 +157,92 @@ async function doWork(input) {
     } else {
       maxValue = maxValueFahrrad;
     }
-
-    summeZweirrad.setOption(
-      (option = {
-        title: {
-          text: "Kamera: " + input,
+    let option = {
+      title: {
+        text: "Kamera: " + input,
+      },
+      tooltip: {
+        trigger: "axis"
+      },
+      xAxis: {
+        type: "category",
+        show: true,
+        data: timestampstoString(responseMotor[0].timestamps),
+      },
+      legend: {
+        data: ['Summe Fahrräder', 'Summe Motorräder', 'Niederschlag']
+      },
+      yAxis: [{
+          type: 'value',
+          name: 'Fahrräder/Stunde',
+          min: 0,
+          max: maxValue,
         },
-        tooltip: {
-          trigger: "axis"
-        },
-        xAxis: {
-          type: "category",
-          show: true,
-          data: timestampstoString(responseMotor[0].timestamps),
-        },
-        legend: {
-          data: ['Summe Fahrräder', 'Summe Motorräder', 'Niederschlag']
-        },
-        yAxis: [{
-            type: 'value',
-            name: 'Fahrräder/Stunde',
-            min: 0,
-            max: maxValue,
-          },
-          {
-            type: 'value',
-            name: 'Niederschlag (mm)',
-            nameLocation: 'start',
-            min: 0,
-            max: maxValueRain,
-            inverse: true,
-            axisLine: {
-              lineStyle: {
-                // color: "#0088ff",
-                color:"blue",
-                width: 3
-              }
+        {
+          type: 'value',
+          name: 'Niederschlag (mm)',
+          nameLocation: 'start',
+          min: 0,
+          max: maxValueRain,
+          inverse: true,
+          axisLine: {
+            lineStyle: {
+              // color: "#0088ff",
+              color:"blue",
+              width: 3
             }
           }
-        ],
-        toolbox: {
-          right: 10,
-          feature: {
-            dataZoom: {
-              yAxisIndex: "none",
-            },
-            restore: {},
-            saveAsImage: {},
+        }
+      ],
+      toolbox: {
+        right: 10,
+        feature: {
+          dataZoom: {
+            yAxisIndex: "none",
           },
+          restore: {},
+          saveAsImage: {},
         },
-        dataZoom: [
-          {
-            start: 10,
-            end: 20
-          },
-          {
-            type: "inside",
-          },
-        ],
-        series: [{
-            name: 'Summe Motorräder',
-            type: 'line',
-            data: temp,
-            color: '#FF8800'
-          },
-          {
-            name: 'Summe Fahrräder',
-            type: 'line',
-            data: responseFahrr[0].values,
-            color: '#00ff00'
-          },
-          {
-            name: 'Niederschlag',
-            type: 'line',
-            yAxisIndex: 1,
-            data: responseRain[0].values,
-            areaStyle: {},
-            color: '#0088ff',
-          }
-        ]
-      })
-    );
+      },dataZoom: [
+        {
+        },
+        {
+          type: "inside",
+        },
+      ],
+      series: [{
+          name: 'Summe Motorräder',
+          type: 'line',
+          data: temp,
+          color: '#FF8800'
+        },
+        {
+          name: 'Summe Fahrräder',
+          type: 'line',
+          data: responseFahrr[0].values,
+          color: '#00ff00'
+        },
+        {
+          name: 'Niederschlag',
+          type: 'line',
+          yAxisIndex: 1,
+          data: responseRain[0].values,
+          areaStyle: {},
+          color: '#0088ff',
+        }
+      ]
+    }
+    summeZweirrad.setOption(option);
   } catch (err) {
     console.log(err);
   }
 }
 doWork("mavi001");
+
+summeZweirrad.on('click', function (params) {
+  console.log(params);
+});
+
 $(window).on('resize', function () {
   if (summeZweirrad != null && summeZweirrad != undefined) {
     summeZweirrad.resize();
@@ -268,11 +272,10 @@ function getData(tsID, startDate, endDate, interval, limit, func = 'avg', lora =
 
 function timestampstoString(response) {
   timestamps = [];
+  var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   response.forEach(element => {
     date = new Date(element);
-    timestamps.push(date.toLocaleDateString("de-DE", {
-      hour: "numeric"
-    }));
+    timestamps.push(date.toLocaleDateString("de-DE", options));
   });
   return timestamps;
 }
