@@ -258,9 +258,39 @@ doWork("mavi001");
 summeZweirrad.on('click', function (params) {
   
     console.log(params);
-  
+   dates = getTimeDate(params['name']);
+   data = getMultiData(dates);   
 });
 
+function getTimeDate(date){
+    var dateSplited = date.split(', ')[1].split('.'); 
+    var date = new Date(dateSplited[2], dateSplited[1]-1, dateSplited[0], 0,0,0,0);
+    var date2 = new Date(dateSplited[2], dateSplited[1]-1, dateSplited[0], 23,59,59,0);
+    var dates = [
+      [calcDate(date, -14), calcDate(date2,-14)],
+      [calcDate(date, -7), calcDate(date2,-7)],
+      [calcDate(date, 0), calcDate(date2,0)],
+      [calcDate(date, 7), calcDate(date2, 7)],
+      [calcDate(date, 14), calcDate(date2, 14)],
+    ]
+    return dates;
+}
+function calcDate(date, days){
+ var result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result.toISOString();
+  }
+function getMultiData(dates){
+data = [];
+var tsID = "00f21618-e568-4655-8752-bd58e7b7ae62";
+console.log(dates);
+dates.forEach(day => {
+console.log(day);
+ data.push(getData(tsID, day[0], day[1], 'M'));
+});
+console.log(data);
+return data;
+}
 $(window).on('resize', function () {
   if (summeZweirrad != null && summeZweirrad != undefined) {
     summeZweirrad.resize();
@@ -271,6 +301,7 @@ function getData(tsID, startDate, endDate, interval, limit, func = 'avg', lora =
   data = [];
   lora ? api_key = "b64af05bfac248888c1ff5681daab321" : api_key = "8e3b5fe2c8644919ae63394238b89644";
   var url = `https://api.mvvsmartcities.com/v3/timeseries?Ocp-Apim-Subscription-Key=${api_key}&timeSeriesId=${tsID}&func=${func}&interval=${interval}&timezone=Europe%2FBerlin&output=split&metadata=false&from=${startDate}&to=${endDate}&sort=${sort}`;
+  console.log(url);
   var promise = new Promise((resolve, reject) => {
     $.getJSON(
       url, {},
