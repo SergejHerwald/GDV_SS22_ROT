@@ -24,10 +24,11 @@ async function getTsIDsKamera(kamera){
     reject("Keine Daten");
   });
 }
-
+let constFahrrArr = [];
+let constMotorArr = [];
+let constRegenArr = [];
 async function doWork(input) {
   let fahrrArr = await fetch("./data/mavi_fahrrad_sensors.json").then(response => response.json());
-
 
   try {
     let auswahl = 0;
@@ -63,7 +64,7 @@ async function doWork(input) {
         break;
       case "mavi016":
         auswahl = await getTsIDsKamera(input);
-        nummer = 7;
+        nummer = 0;
         break;
       case "mavi003":
         auswahl = await getTsIDsKamera(input);
@@ -106,6 +107,9 @@ async function doWork(input) {
         nummer = 0;
         break;
     }
+    constMotorArr = auswahl;
+    constFahrrArr = fahrrArr[nummer].timeSeriesId;
+
     const responseMotor = await getSumMotorrad(
       auswahl[0], auswahl[1], auswahl[2],
       startDate,
@@ -150,7 +154,6 @@ async function doWork(input) {
     for (let i = 0; i<= lenValuesArr; i++){
       shaddowArr.push(1000);
     }
-    console.log(shaddowArr);
     let maxValue;
     let maxValueMotorrad = Math.max(...temp);
     let maxValueFahrrad = Math.max(...responseFahrr[0].values);
@@ -260,6 +263,15 @@ summeZweirrad.on('click', function (params) {
     console.log(params);
    dates = getTimeDate(params['name']);
    data = getMultiData(dates);   
+  //TS_ID_Fahrräder  
+  console.log(constFahrrArr);
+  //TS_ID_Motorräder
+  console.log(constMotorArr);
+  //TS_ID_Wetterstationen
+  console.log(precipitationArr);
+  //Datum
+  console.log(params);
+  
 });
 
 function getTimeDate(date){

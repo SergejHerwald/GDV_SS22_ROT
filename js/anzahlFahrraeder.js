@@ -10,7 +10,7 @@ function getSumFahrrad (tsID, startDate, endDate){
         for (let elements in res){ 
           sum.push(res);
         }
-        resolve(res);
+        resolve(res); 
         reject("Keine Daten Verfügbar");
       }
     );
