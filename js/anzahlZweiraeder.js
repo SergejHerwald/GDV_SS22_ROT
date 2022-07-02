@@ -63,7 +63,7 @@ async function doWork(input) {
         break;
       case "mavi016":
         auswahl = await getTsIDsKamera(input);
-        nummer = 7;
+        nummer = 0;
         break;
       case "mavi003":
         auswahl = await getTsIDsKamera(input);
@@ -115,7 +115,7 @@ async function doWork(input) {
 
     const responseFahrr = await getSumFahrrad(fahrrArr[nummer].timeSeriesId, startDate, endDate);
     const responseRain = await getData(precipitationArr[0].timeSeriesId, startDate, "2022-05-24T00%3A00%3A00.000Z", 'H', 'avg');
-    console.log(responseMotor);
+    console.log(responseFahrr);
     let temp = [];
     for (let i = 0; i < responseMotor[0].values.length; i++) {
       if (responseMotor[0] && responseMotor[1] && responseMotor[2]) {
