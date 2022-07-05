@@ -31,6 +31,17 @@ body{
 .abstandLinks{
     margin: 0px 0px 0px 10px;
 }
+.subCharts{
+/* display: inline-block; */
+width: 100%;
+}
+.subChart{
+width: 200px;
+height: 500px;
+display: inline-block;
+overflow: hidden;
+}
+
 
 #text{
     color:white;
