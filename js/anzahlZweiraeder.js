@@ -285,12 +285,13 @@ summeZweirrad.on('click', async function (params) {
   dates = getTimeDate(params['name']);
   // xData = getHoursMinutes();
 
-  yData = await getAllData(dates);
-
+  data = await getAllData(dates);
+  max = [data[1],data[2]]
+  console.log(data);
   for (i = 0; i < 5; i++) {
     subChartDate = new Date(dates[i][0]);
     subChartTitle = subChartDate.toLocaleDateString("de-DE", {weekday:'long',day: '2-digit', month: '2-digit' });
-    subCharts[i].setOption(getOption(subChartTitle, yData[i]));
+    subCharts[i].setOption(getOption(subChartTitle, data[0][i],max ));
     subCharts[i].resize();
   }
 });
@@ -316,13 +317,15 @@ function calcDate(date, days) {
 
 async function getAllData(dates) {
   var data = []
-  var max = [];
+  var maxZweirad = 0;
+  var maxRain = 0;
+  
   for (i = 0; i < 5; i++) {
-    [data[i], max[i]] = await getMultiData(dates[i])
-   
+    [data[i], max] = await getMultiData(dates[i])
+    maxZweirad = Math.max(maxZweirad, max[0]);
+    maxRain = Math.max(maxRain, max[1]);
 }
-console.log(max);
-return data;
+return [data, maxZweirad, maxRain];
 }
 async function getMultiData(day) {
   fahrrData = [];
@@ -334,12 +337,10 @@ async function getMultiData(day) {
 
   preciptionData = [];
   preciptionData.push(await getDayData(precipitationArr[0].timeSeriesId, day));
-  console.log([fahrrData, motorrData, preciptionData]);
-  maxFahr = Math.max(fahrrData);
-  maxMotor = Math.max(motorrData);
-  maxRain = Math.max(preciptionData);
-  maxZweirad = Math.max([maxFahr, maxMotor]);
-
+  maxFahr = Math.max(...(fahrrData[0][0].values));
+  maxMotor = Math.max(...(motorrData[0][0].values));
+  maxRain = Math.max(...(preciptionData[0][0].values));
+  maxZweirad = Math.max(maxFahr, maxMotor);
   return [[fahrrData, motorrData, preciptionData],[maxZweirad, maxRain]];
 }
 
@@ -404,10 +405,11 @@ function timestampstoString(response) {
 
 }
 
-  function getOption(title, data) {
-  console.log( data);
+  function getOption(title, data,max) {
+  maxZweirad= Math.ceil(max[0]/5)*5;
+  maxRain= Math.ceil(max[1]);
+  console.log(maxZweirad, maxRain)
   console.log(data[0][0][0].timestamps);
-
   let option = {
     title: {
       text: title,
@@ -436,13 +438,13 @@ function timestampstoString(response) {
     yAxis: [{
       type: 'value',
       min: 0,
-      max: 50,
+      max: maxZweirad,
     },
     {
       type: 'value',
       nameLocation: 'start',
       min: 0,
-      max: 9,
+      max: maxRain,
       inverse: true,
       axisLine: {
         lineStyle: {
