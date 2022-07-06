@@ -7,7 +7,7 @@ optionLogo = {
         left: 'center',
         top: 'center',
         style: {
-          text: 'Title bls bla bla',
+          text: 'CylceVis',
           fontSize: 80,
           fontWeight: 'bold',
           lineDash: [0, 200],

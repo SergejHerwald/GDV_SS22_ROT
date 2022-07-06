@@ -1,28 +1,29 @@
 let precipitationArr = [{
-    name: "0085EF4F08FF5288_precipitation_intensity",
-    timeSeriesId: "ed86d215-0bac-4f2d-b809-38d2f00e9129"
-  },
-  {
-    name: "0085EF4F08FF5288_precipitation_type",
-    timeSeriesId: "08febe79-4d7d-41b6-a09a-d7788ae582ec"
-  },
+  name: "0085EF4F08FF5288_precipitation_intensity",
+  timeSeriesId: "ed86d215-0bac-4f2d-b809-38d2f00e9129"
+},
+{
+  name: "0085EF4F08FF5288_precipitation_type",
+  timeSeriesId: "08febe79-4d7d-41b6-a09a-d7788ae582ec"
+},
 
 ]
 
 var summeZweirrad = echarts.init(document.getElementById("summeZweirrad"), 'dark');
 var twoWeeksAgo = echarts.init(document.getElementById("vorZweiWochen"), 'dark');
-var oneWeekAgo =  echarts.init(document.getElementById("vorEinerWoche"), 'dark');
+var oneWeekAgo = echarts.init(document.getElementById("vorEinerWoche"), 'dark');
 var thisDay = echarts.init(document.getElementById("dieserTag"), 'dark');
 var oneWeekInFuture = echarts.init(document.getElementById("eineWocheDanach"), 'dark');
 var twoWeeksInFuture = echarts.init(document.getElementById("zweiWochenDanach"), 'dark');
 var subCharts = [twoWeeksAgo, oneWeekAgo, thisDay, oneWeekInFuture, twoWeeksInFuture];
 summeZweirrad.group = 'gruppe1';
-twoWeeksAgo.group= 'gruppe1'; 
-oneWeekAgo.group= 'gruppe1'; 
-thisDay.group= 'gruppe1'; 
-oneWeekInFuture.group= 'gruppe1'; 
-twoWeeksInFuture.group= 'gruppe1'; 
-async function getTsIDsKamera(kamera){
+twoWeeksAgo.group = 'gruppe2';
+oneWeekAgo.group = 'gruppe2';
+thisDay.group = 'gruppe2';
+oneWeekInFuture.group = 'gruppe2';
+twoWeeksInFuture.group = 'gruppe2';
+echarts.connect('gruppe2');
+async function getTsIDsKamera(kamera) {
   let motorArr = await fetch("./data/mavi_motorrad_sensors.json").then(response => response.json());
   return new Promise((resolve, reject) => {
     returnArr = [];
@@ -162,7 +163,7 @@ async function doWork(input) {
     let shaddowArr = [];
     let valuesArr = responseMotor[0].timestamps;
     let lenValuesArr = valuesArr.length
-    for (let i = 0; i<= lenValuesArr; i++){
+    for (let i = 0; i <= lenValuesArr; i++) {
       shaddowArr.push(1000);
     }
     let maxValue;
@@ -192,26 +193,26 @@ async function doWork(input) {
         data: ['Summe Fahrräder', 'Summe Motorräder', 'Niederschlag']
       },
       yAxis: [{
-          type: 'value',
-          name: 'Fahrräder/Stunde',
-          min: 0,
-          max: maxValue,
-        },
-        {
-          type: 'value',
-          name: 'Niederschlag (mm)',
-          nameLocation: 'start',
-          min: 0,
-          max: maxValueRain,
-          inverse: true,
-          axisLine: {
-            lineStyle: {
-              // color: "#0088ff",
-              color:"blue",
-              width: 3
-            }
+        type: 'value',
+        name: 'Zweiräder/Stunde',
+        min: 0,
+        max: maxValue,
+      },
+      {
+        type: 'value',
+        name: 'Niederschlag (mm)',
+        nameLocation: 'start',
+        min: 0,
+        max: maxValueRain,
+        inverse: true,
+        axisLine: {
+          lineStyle: {
+            // color: "#0088ff",
+            color: "blue",
+            width: 3
           }
         }
+      }
       ],
       toolbox: {
         right: 10,
@@ -222,7 +223,7 @@ async function doWork(input) {
           restore: {},
           saveAsImage: {},
         },
-      },dataZoom: [
+      }, dataZoom: [
         {
         },
         {
@@ -230,38 +231,38 @@ async function doWork(input) {
         },
       ],
       series: [{
-          name: 'Summe Motorräder',
-          type: 'line',
-          data: temp,
-          color: '#FF8800'
-        },
-        { // shadow bar
-          type: 'bar',
-          barWidth: '100%',
-          itemStyle: {
-              // transparent bar
-              normal: { color: 'rgba(0, 0, 0, 0)' }
-          },
-          barGap: '-100%',
-          data: shaddowArr,
-          tooltip: {
-            show: false
-         }
+        name: 'Summe Motorräder',
+        type: 'line',
+        data: temp,
+        color: '#FF8800'
       },
-        {
-          name: 'Summe Fahrräder',
-          type: 'line',
-          data: responseFahrr[0].values,
-          color: '#00ff00'
+      { // shadow bar
+        type: 'bar',
+        barWidth: '100%',
+        itemStyle: {
+          // transparent bar
+          normal: { color: 'rgba(0, 0, 0, 0)' }
         },
-        {
-          name: 'Niederschlag',
-          type: 'line',
-          yAxisIndex: 1,
-          data: responseRain[0].values,
-          areaStyle: {},
-          color: '#0088ff',
+        barGap: '-100%',
+        data: shaddowArr,
+        tooltip: {
+          show: false
         }
+      },
+      {
+        name: 'Summe Fahrräder',
+        type: 'line',
+        data: responseFahrr[0].values,
+        color: '#00ff00'
+      },
+      {
+        name: 'Niederschlag',
+        type: 'line',
+        yAxisIndex: 1,
+        data: responseRain[0].values,
+        areaStyle: {},
+        color: '#0088ff',
+      }
       ]
     }
     summeZweirrad.setOption(option);
@@ -270,78 +271,72 @@ async function doWork(input) {
   }
 }
 doWork("mavi001");
-// var ddd = getTimeDate("a, 08.03.2022");
-// var ttt = getOption("test",  getMultiData(ddd));
-// subCharts[0].setOption(ttt);
-summeZweirrad.on('click',async function (params) {
-  
-  //   console.log(params);
-  // console.log(constFahrrArr);
-  // console.log(constMotorArr);
-   dates = getTimeDate(params['name']);
+summeZweirrad.on('click', async function (params) {
 
-   subCharts[0].setOption(getOption("test", await getMultiData(dates[0])));
-   subCharts[1].setOption(getOption("test", await getMultiData(dates[1])));
-   subCharts[2].setOption(getOption("test", await getMultiData(dates[2])));
-   subCharts[3].setOption(getOption("test", await getMultiData(dates[3])));
-   subCharts[4].setOption(getOption("test", await getMultiData(dates[4])));
-   subCharts[0].resize();
-  //  dates.forEach( (day, index)=>{
-  //  subCharts[index].setOption(getOption("test", getMultiData(day)));
-  //  });
-  //  data = getMultiData(dates);   
-    
-  //TS_ID_Fahrräder  
-  //TS_ID_Motorräder
-  //TS_ID_Wetterstationen
-  // console.log(precipitationArr);
-  //Datum
-  // console.log(data);
-  
+  dates = getTimeDate(params['name']);
+  // xData = getHoursMinutes();
+
+  yData = await getAllData(dates);
+
+  for (i = 0; i < 5; i++) {
+    subChartDate = new Date(dates[i][0]);
+    subChartTitle = subChartDate.toLocaleDateString("de-DE", {weekday:'long',day: '2-digit', month: '2-digit' });
+    subCharts[i].setOption(getOption(subChartTitle, yData[i]));
+    subCharts[i].resize();
+  }
 });
 
-function getTimeDate(date){
-    var dateSplited = date.split(', ')[1].split('.'); 
-    var date = new Date(dateSplited[2], dateSplited[1]-1, dateSplited[0], 0,0,0,0);
-    var date2 = new Date(dateSplited[2], dateSplited[1]-1, dateSplited[0], 23,59,59,0);
-    var dates = [
-      [calcDate(date, -14), calcDate(date2,-14)],
-      [calcDate(date, -7), calcDate(date2,-7)],
-      [calcDate(date, 0), calcDate(date2,0)],
-      [calcDate(date, 7), calcDate(date2, 7)],
-      [calcDate(date, 14), calcDate(date2, 14)],
-    ]
-    return dates;
+function getTimeDate(date) {
+  var dateSplited = date.split(', ')[1].split('.');
+  var date = new Date(dateSplited[2], dateSplited[1] - 1, dateSplited[0], 0, 0, 0, 0);
+  var date2 = new Date(dateSplited[2], dateSplited[1] - 1, dateSplited[0], 23, 59, 59, 0);
+  var dates = [
+    [calcDate(date, -14), calcDate(date2, -14)],
+    [calcDate(date, -7), calcDate(date2, -7)],
+    [calcDate(date, 0), calcDate(date2, 0)],
+    [calcDate(date, 7), calcDate(date2, 7)],
+    [calcDate(date, 14), calcDate(date2, 14)],
+  ]
+  return dates;
 }
-function calcDate(date, days){
- var result = new Date(date);
+function calcDate(date, days) {
+  var result = new Date(date);
   result.setDate(result.getDate() + days);
   return result.toISOString();
-  }
-
-  
-async  function getMultiData(day){
-fahrrData = [];
-fahrrData.push( await getDayData(constFahrrArr,day));
-
-// [constFahrrArr].forEach((tsID) =>{
-// fahrrData.push( getDayData(tsID, day));
-// });
-motorrData = [];
-motorrData.push(await getDayData(constMotorArr[0], day));
-// constMotorArr.forEach((tsID) =>{
-// motorrData.push(  getDayData(tsID, day));
-// });
-
-  preciptionData = []; 
-  preciptionData.push(await getDayData(precipitationArr[0].timeSeriesId, day));
-  console.log([fahrrData, motorrData, preciptionData]);
- return[fahrrData, motorrData, preciptionData];
 }
 
- async function getDayData(tsID, day){
+async function getAllData(dates) {
+  var data = []
+  var max = [];
+  for (i = 0; i < 5; i++) {
+    [data[i], max[i]] = await getMultiData(dates[i])
+   
+}
+console.log(max);
+return data;
+}
+async function getMultiData(day) {
+  fahrrData = [];
+  fahrrData.push(await getDayData(constFahrrArr, day));
+
+
+  motorrData = [];
+  motorrData.push(await getDayData(constMotorArr[0], day));
+
+  preciptionData = [];
+  preciptionData.push(await getDayData(precipitationArr[0].timeSeriesId, day));
+  console.log([fahrrData, motorrData, preciptionData]);
+  maxFahr = Math.max(fahrrData);
+  maxMotor = Math.max(motorrData);
+  maxRain = Math.max(preciptionData);
+  maxZweirad = Math.max([maxFahr, maxMotor]);
+
+  return [[fahrrData, motorrData, preciptionData],[maxZweirad, maxRain]];
+}
+
+async function getDayData(tsID, day) {
   var dat;
-   dat = await getData(tsID, day[0], day[1], 'M');
+  dat = await getData(tsID, day[0], day[1], 'M');
   console.log(await dat);
   return dat;
 
@@ -382,74 +377,102 @@ function timestampstoString(response) {
   });
   return timestamps;
 }
+ function getHoursMinutes(timestamps) {
+  returnTimestamps = [];
+  var options = { hour: 'numeric', minute: 'numeric' };
+  // for (h = 0; h < 24; h++) {
+  //   for (m = 0; m <= 6; m++) {
+  //     date = new Date(2022, 1, 1, h, m * 10);
+  //     returnTimestamps.push(date.toLocaleTimeString("de-DE", options))
 
-function getOption(title, data){
-let option={
-title: {
-        text: title,
+  //   }
+  // }
+  timestamps.forEach(timestamp => {
+  date = new Date(timestamp);
+  returnTimestamps.push(date.toLocaleTimeString("de-DE",options))
+  });
+  return returnTimestamps;
+
+}
+
+  function getOption(title, data) {
+  console.log( data);
+  console.log(data[0][0][0].timestamps);
+
+  let option = {
+    title: {
+      text: title,
+    },
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        type: "shadow"
       },
-      tooltip: {
-        trigger: "axis"
-      },
-      xAxis: {
-        type: "category",
-        show: true,
-        data: timestampstoString(data[0][0][0].timestamps),
-      },
-      legend: {
-        data: ['Summe Fahrräder', 'Summe Motorräder', 'Niederschlag']
-      },
-      yAxis: [{
-          type: 'value',
-          name: 'Fahrräder/Stunde',
-          min: 0,
-          max: 50,
+      confine: true,
+    },
+    xAxis: {
+      type: "category",
+      show: true,
+      data:getHoursMinutes( data[0][0][0].timestamps),
+      // formatter: '{HH}:{mm}',
+     
+    
+      
+    },
+
+    yAxis: [{
+      type: 'value',
+      min: 0,
+      max: 50,
+    },
+    {
+      type: 'value',
+      nameLocation: 'start',
+      min: 0,
+      max: 9,
+      inverse: true,
+      axisLine: {
+        lineStyle: {
+          // color: "#0088ff",
+          color: "blue",
+          width: 3
+        }
+      }
+    }
+    ],
+dataZoom: [
+        {
         },
         {
-          type: 'value',
-          name: 'Niederschlag (mm)',
-          nameLocation: 'start',
-          min: 0,
-          max: 9,
-          inverse: true,
-          axisLine: {
-            lineStyle: {
-              // color: "#0088ff",
-              color:"blue",
-              width: 3
-            }
-          }
-        }
+          type: "inside",
+        },
       ],
-      toolbox: {
-        right: 10,
-      },
-      series: [
+    series: [
       {
-          name: 'Summe Motorräder',
-          type: 'line',
-          data: data[1][0][0].values,
-          color: '#FF8800'
-        },
-       
-        {
-          name: 'Summe Fahrräder',
-          type: 'line',
-          data: data[0][0][0].values,
-          color: '#00ff00'
-        },
-        {
-          name: 'Niederschlag',
-          type: 'line',
-          yAxisIndex: 1,
-          data: data[2][0][0].values,
-          areaStyle: {},
-          color: '#0088ff',
-        }
-      ]
+        name: 'Summe Motorräder',
+        type: 'line',
+        data: data[1][0][0].values,
+        color: '#FF8800'
+      },
 
-    };
+      {
+        name: 'Summe Fahrräder',
+        type: 'line',
+        data:data[0][0][0].values,
+        color: '#00ff00'
+      },
+      {
+        name: 'Niederschlag',
+        type: 'line',
+        yAxisIndex: 1,
+        data: data[2][0][0].values,
+        areaStyle: {},
+        color: '#0088ff',
+      }
+    ]
 
- 
+  };
+
+
   return option;
 }
