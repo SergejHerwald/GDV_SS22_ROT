@@ -180,6 +180,9 @@ async function doWork(input) {
     let option = {
       title: {
         text: "Kamera: " + input,
+        textStyle:{
+          color: "rgba(58, 177, 221, 1)",
+        }
       },
       tooltip: {
         trigger: "axis"
@@ -194,6 +197,9 @@ async function doWork(input) {
       },
       yAxis: [{
         type: 'value',
+        nameTextStyle:{
+          color: "rgba(58, 177, 221, 1)",
+        },
         name: 'Zweiräder/Stunde',
         min: 0,
         max: maxValue,
@@ -201,6 +207,9 @@ async function doWork(input) {
       {
         type: 'value',
         name: 'Niederschlag (mm)',
+        nameTextStyle:{
+          color: "rgba(58, 177, 221, 1)",
+        },
         nameLocation: 'start',
         min: 0,
         max: maxValueRain,
@@ -402,6 +411,10 @@ function timestampstoString(response) {
   let option = {
     title: {
       text: title,
+      left: 'center',
+      textStyle:{
+        color: "rgba(58, 177, 221, 1)",
+      }
     },
     tooltip: {
       trigger: "axis",
